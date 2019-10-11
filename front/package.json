@@ -9,6 +9,7 @@
   "author": "th",
   "license": "ISC",
   "dependencies": {
+    "antd": "^3.23.6",
     "next": "^9.1.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2"
