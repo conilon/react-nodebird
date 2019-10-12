@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
+import { loginAction, logoutAction } from '../reducers/user.js';
 
 const dummy = {
     isLoggedIn: true,
@@ -16,8 +18,18 @@ const dummy = {
 };
 
 const Home = () => {
+    const dispatch = useDispatch();
+    const { user } = useSelector(state => state.user);
+
+    useEffect(() => {
+        dispatch(loginAction);
+        dispatch(logoutAction);
+        dispatch(loginAction);
+    }, []);
+
     return (
         <div>
+            {user ? <div>{user.nickname}님이 로그인 했습니다.</div> : <div>로그아웃 했습니다.</div>}
             {dummy.isLoggedIn && <PostForm /> }
             {dummy.mainPosts.map((c) => {
                 return (
