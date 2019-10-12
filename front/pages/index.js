@@ -1,5 +1,6 @@
 import React from 'react';
-import { Form, Input, Button, Card, Icon, Avatar } from 'antd';
+import PostForm from '../components/PostForm';
+import PostCard from '../components/PostCard';
 
 const dummy = {
     isLoggedIn: true,
@@ -17,48 +18,10 @@ const dummy = {
 const Home = () => {
     return (
         <div>
-            {
-                dummy.isLoggedIn && 
-                <Form encType="multipart/form-data" style={{ marginBottom: 20 }}>
-                    <Input.TextArea maxLength={140} placeholder="어떤 신기한 일이 있었나요?" />
-                    <div>
-                        <input type="file" multiple hidden />
-                        <Button>이미지 업로드</Button>
-                        <Button type="primary" htmlType="submit" style={{ float: 'right' }}>짹짹</Button>
-                    </div>
-                    <div>
-                        {dummy.imagePaths.map((v) => {
-                            return (
-                                <div key={v} style={{ display: 'inline-block'}}>
-                                    <img src={`http://localhost:3065/` + v} alt={v} style={{ width: '200px' }} />
-                                    <div>
-                                        <Button>제거</Button>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </Form>
-            }
+            {dummy.isLoggedIn && <PostForm /> }
             {dummy.mainPosts.map((c) => {
                 return (
-                    <Card
-                        key={+c.createAt}
-                        cover={c.img && <img src={c.img} alt="example" />}
-                        actions={[
-                            <Icon type="retweet" key="retweet" />,
-                            <Icon type="heart" key="heart" />,
-                            <Icon type="message" key="message" />,
-                            <Icon type="ellipsis" key="ellipsis" />,
-                        ]}
-                        extra={<Button>팔로우</Button>}
-                    >
-                        <Card.Meta 
-                            avatar={<Avatar>{c.User.nickname[0]}</Avatar>}
-                            title={c.User.nickname}
-                            description={c.content}
-                        />
-                    </Card>
+                    <PostCard key={+c.createdAt} post={c} />
                 );
             })}
         </div>

@@ -1,7 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import { Menu, Input, Row, Col, Card, Avatar } from 'antd';
+import { Menu, Input, Row, Col } from 'antd';
+import UserProfile from './UserProfile';
 import LoginForm from './LoginForm';
 
 const dummy ={
@@ -24,22 +25,7 @@ const AppLayout = ({ children }) => {
             </Menu>
             <Row gutter={8}>
                 <Col xs={24} md={6}>
-                    {dummy.isLoggedIn ? 
-                        <Card
-                            actions={[
-                                <div key="twit">짹짹<br />{dummy.Post.length}</div>,
-                                <div key="following">팔로잉<br />{dummy.Following.length}</div>,
-                                <div key="follower">팔로워<br />{dummy.Follower.length}</div>,
-                            ]}
-                        >
-                            <Card.Meta 
-                                avatar={<Avatar>{dummy.nickname[0]}</Avatar>}
-                                title={dummy.nickname}
-                            />
-                        </Card>
-                        :
-                        <LoginForm />
-                    }
+                    {dummy.isLoggedIn ? <UserProfile /> : <LoginForm />}
                 </Col>
                 <Col xs={24} md={12}>
                     {children}
@@ -53,7 +39,7 @@ const AppLayout = ({ children }) => {
 };
 
 AppLayout.propTypes = {
-    children: PropTypes.node.isRequired,
+    children: PropTypes.node,
 };
 
 export default AppLayout;
