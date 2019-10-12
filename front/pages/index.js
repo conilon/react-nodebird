@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 import { loginAction, logoutAction } from '../reducers/user.js';
@@ -17,14 +18,11 @@ const dummy = {
     }],
 };
 
-const Home = () => {
-    const dispatch = useDispatch();
-    const { user } = useSelector(state => state.user);
-
+const Home = ({ user, login, logout }) => {
     useEffect(() => {
-        dispatch(loginAction);
-        dispatch(logoutAction);
-        dispatch(loginAction);
+        login();
+        logout();
+        login();
     }, []);
 
     return (
@@ -40,4 +38,23 @@ const Home = () => {
     );
 };
 
-export default Home;
+function mapStateToProps(state) {
+    return {
+        user: state.user,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        login: () => dispatch(loginAction),
+        logout: () => dispatch(logoutAction),
+    };
+}
+
+Home.propTypes = {
+    user: PropTypes.object,
+    login: PropTypes.func,
+    logout: PropTypes.func,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
