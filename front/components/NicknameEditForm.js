@@ -9,4 +9,5 @@ const NicknameEditForm = () => {
         </Form>
     );
 };
+
 export default NicknameEditForm;
