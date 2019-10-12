@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import AppLayout from '../components/AppLayout';
 import { Form, Input, Checkbox, Button } from 'antd';
+import Password from 'antd/lib/input/Password';
 
 const Signup = () => {
     const [id, setId] = useState('');
@@ -9,9 +10,24 @@ const Signup = () => {
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
     const [term, setTerm] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
+    const [termError, setTermError] = useState(false);
 
-    const onSubmit = () => {
-
+    const onSubmit = (e) => {
+        e.preventDefault();
+        if (password !== passwordCheck) {
+            return setPasswordError(true);
+        }
+        if (!term) {
+            return setTermError(true);
+        }
+        console.log({
+            id,
+            nickname,
+            password,
+            passwordCheck,
+            term
+        });
     };
 
     const onChangeId = (e) => {
@@ -27,12 +43,28 @@ const Signup = () => {
     };
 
     const onChangePassCheck = (e) => {
+        setPasswordError(e.target.value != password);
         setPasswordCheck(e.target.value);
     };
 
     const onChangeTerm = (e) => {
-        setPasswordCheck(e.target.value);
+        setTermError(false);
+        setTerm(e.target.checked);
     };
+
+    /*
+    // custom hook
+    const useInput = (initValue = null) => {
+        const [value, setter] = useState(initValue);
+        const handler = useCallback((e) => {
+            setter(e.target.value);
+        }, []);
+        return [value, handler];
+    };
+
+    // custom hook 생성 방법
+    const [id, onChangeId] = useInput('');
+    */
 
     return (
         <>
@@ -62,12 +94,14 @@ const Signup = () => {
                             <label htmlFor="user-password-check">비밀번호체크</label>
                             <br />
                             <Input name="user-password-check" value={passwordCheck} type="password" required onChange={onChangePassCheck} />
+                            {passwordError && <div style={{ color: 'red' }}>비밀번호가 일치하지 않습니다.</div>}
                         </div>
                         <div>
-                            <Checkbox name="user-term" value={term} onChange={onChangeTerm}>동의합니다.</Checkbox>
+                            <Checkbox name="user-term" checked={term} onChange={onChangeTerm}>동의합니다.</Checkbox>
+                            {termError && <div style={{ color: 'red' }}>약관에 동의하셔야 합니다.</div>}
                         </div>
-                        <div>
-                            <Button type="primary">가입하기</Button>
+                        <div style={{ marginTop: 10 }}>
+                            <Button type="primary" htmlType="submit">가입하기</Button>
                         </div>
                     </Form>
                 </div>
