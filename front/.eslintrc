@@ -32,6 +32,7 @@
         "jsx-a11y/label-has-associated-control": "off",
         "react/jsx-indent-props": "off",
         "react/jsx-one-expression-per-line": "off",
-        "jsx-a11y/anchor-is-valid": "off"
+        "jsx-a11y/anchor-is-valid": "off",
+        "no-alert": "off"
     }
 }
