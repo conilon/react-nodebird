@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
+import { LOG_IN_REQUEST } from '../reducers/user';
 
 const Home = () => {
     const { isLoggedIn } = useSelector(state => state.user);
@@ -10,22 +11,7 @@ const Home = () => {
 
     useEffect(() => {
         dispatch({
-            type: 'HELLO_SAGA',
-        });
-        dispatch({
-            type: 'HELLO_SAGA',
-        });
-        dispatch({
-            type: 'HELLO_SAGA',
-        });
-        dispatch({
-            type: 'HELLO_SAGA',
-        });
-        dispatch({
-            type: 'HELLO_SAGA',
-        });
-        dispatch({
-            type: 'HELLO_SAGA',
+            type: LOG_IN_REQUEST,
         });
     }, []);
     
