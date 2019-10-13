@@ -53,31 +53,19 @@ export const REMOVE_FOLLOWER_FAILURE = 'REMOVE_FOLLOWER_FAILURE';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 
-export const signUpAction = (data) => ({
-    type: SIGN_UP_REQUEST,
-    data,
-});
-
-export const loginAction = {
-    type: LOG_IN_REQUEST,
-};
-
-export const logoutAction = {
-    type: LOG_OUT_REQUEST,
-};
-
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case LOG_IN_REQUEST: {
             return {
                 ...state,
-                loginData: action.data,
-                isLoading: true,
+                isLoggingIn: true,
+                logInErrorReason: '',
             };
         }
         case LOG_IN_SUCCESS: {
             return {
                 ...state,
+                isLoggingIn: false,
                 isLoggedIn: true,
                 me: dummyUser,
                 isLoading: false,
@@ -86,9 +74,10 @@ const reducer = (state = initialState, action) => {
         case LOG_IN_FAILURE: {
             return {
                 ...state,
+                isLoggingIn: false,
                 isLoggedIn: false,
                 me: null,
-                isLoading: false,
+                logInErrorReason: action.error,
             };
         }
         case LOG_OUT_REQUEST: {
@@ -101,7 +90,6 @@ const reducer = (state = initialState, action) => {
         case SIGN_UP_REQUEST: {
             return {
                 ...state,
-                signUpdata: action.data,
             };
         }
         default: {
