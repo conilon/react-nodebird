@@ -26,12 +26,10 @@ export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
 
 export const INCREMENT_NUMBER = 'INCREMENT_NUMBER'; // 동기 요청
 
-export const signUpAction = (data) => {
-    return {
-        type: SIGN_UP_REQUEST,
-        data: data,
-    };
-};
+export const signUpAction = (data) => ({
+    type: SIGN_UP_REQUEST,
+    data,
+});
 
 export const loginAction = {
     type: LOG_IN_REQUEST,

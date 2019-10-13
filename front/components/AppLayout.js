@@ -7,7 +7,7 @@ import UserProfile from './UserProfile';
 import LoginForm from './LoginForm';
 
 const AppLayout = ({ children }) => {
-    const { isLoggedIn } = useSelector(state => state.user);
+    const { isLoggedIn } = useSelector((state) => state.user);
     return (
         <div>
             <Menu mode="horizontal">
@@ -25,7 +25,7 @@ const AppLayout = ({ children }) => {
                     {children}
                 </Col>
                 <Col xs={24} md={6}>
-                    <Link href="/" ><a target="_blank">Made by th</a></Link>
+                    <Link href="/"><a target="_blank">Made by th</a></Link>
                 </Col>
             </Row>
         </div>
@@ -33,7 +33,7 @@ const AppLayout = ({ children }) => {
 };
 
 AppLayout.propTypes = {
-    children: PropTypes.node,
+    children: PropTypes.node.isRequired,
 };
 
 export default AppLayout;

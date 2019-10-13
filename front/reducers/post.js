@@ -15,7 +15,7 @@ export const ADD_DUMMY = 'ADD_DUMMY';
 
 export const addPost = {
     type: ADD_POST,
-}
+};
 
 export const addDummy = {
     type: ADD_DUMMY,

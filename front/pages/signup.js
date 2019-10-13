@@ -21,7 +21,7 @@ const Signup = () => {
         if (!term) {
             return setTermError(true);
         }
-        dispatch(signUpAction({
+        return dispatch(signUpAction({
             id,
             password,
             nickname,
@@ -41,7 +41,7 @@ const Signup = () => {
     }, []);
 
     const onChangePassCheck = useCallback((e) => {
-        setPasswordError(e.target.value != password);
+        setPasswordError(e.target.value !== password);
         setPasswordCheck(e.target.value);
     }, [password]);
 

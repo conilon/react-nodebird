@@ -5,8 +5,8 @@ import PostCard from '../components/PostCard';
 import { LOG_IN_REQUEST } from '../reducers/user';
 
 const Home = () => {
-    const { isLoggedIn } = useSelector(state => state.user);
-    const { mainPosts } = useSelector(state => state.post);
+    const { isLoggedIn } = useSelector((state) => state.user);
+    const { mainPosts } = useSelector((state) => state.post);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -17,12 +17,10 @@ const Home = () => {
     
     return (
         <div>
-            {isLoggedIn && <PostForm /> }
-            {mainPosts.map((c) => {
-                return (
-                    <PostCard key={+c.createdAt} post={c} />
-                );
-            })}
+            {isLoggedIn && <PostForm />}
+            {mainPosts.map((c) => (
+                <PostCard key={+c.createdAt} post={c} />
+            ))}
         </div>
     );
 };
