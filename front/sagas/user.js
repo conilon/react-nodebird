@@ -30,12 +30,14 @@ function* watchLogin() {
 }
 
 function signUpAPI() {
-    return axios.post('/signup');
+    // return axios.post('/signup');
 }
 
 function* signUp() {
     try {
         yield call(signUpAPI);
+        yield delay(2000);
+        throw new Error('회원가입 에러');
         yield put({
             type: SIGN_UP_SUCCESS,
         });
@@ -43,6 +45,7 @@ function* signUp() {
         console.error(e);
         yield put({
             type: SIGN_UP_FAILURE,
+            erorr: e,
         });
     }
 }
