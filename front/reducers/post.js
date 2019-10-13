@@ -1,25 +1,44 @@
 const initialState = {
     mainPosts: [{
+        id: 1,
         User: {
             id: 1,
             nickname: 'th',
         },
         content: '첫 번째 게시글',
         img: 'https://w.namu.la/s/992a8aba82a1e00dd3f120bf3ff3e94a54e5a2cc70cd011c05b1e6abebfc715c261e3d5b719a30d4e2941180a43d44ff4ebc57b282475caa1fff82cb55bc5142efefa9cd1d754dbb98b7f29db282e3f66bcb5b12555bda684c75cce46179f2ca0be016c7d77ba5db8721608208963616',
+        Comments: [],
+        createdAt: new Date(),
     }], // 화면에 보일 포스트들
     imagePaths: [], // 미리보기 이미지 경로
     addPostErrorReason: '', // 포스트 업로드 실패 사유
     isAddingPost: false, // 포스트 업로드 중
     postAdded: false, // 포스트 업로드 성공
+    isAddingComment: false,
+    addCommentErrorReason: '',
+    commentAdded: false,
 };
 
 const dummyPost = {
+    id: 2,
     User: {
         id: 2,
         nickname: 'thmsy',
     },
     content: '두 번째 게시글',
     img: 'https://w.namu.la/s/992a8aba82a1e00dd3f120bf3ff3e94a54e5a2cc70cd011c05b1e6abebfc715c261e3d5b719a30d4e2941180a43d44ff4ebc57b282475caa1fff82cb55bc5142efefa9cd1d754dbb98b7f29db282e3f66bcb5b12555bda684c75cce46179f2ca0be016c7d77ba5db8721608208963616',
+    Comments: [],
+    createdAt: new Date(),
+};
+
+const dummyComment = {
+    id: 1,
+    User: {
+        id: 1,
+        nickname: 'thy',
+    },
+    content: '더미 댓글입니다.',
+    createdAt: new Date(),
 };
 
 export const LOAD_MAIN_POSTS_REQUEST = 'LOAD_MAIN_POSTS_REQUEST';
@@ -91,6 +110,34 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 isAddingPost: false,
                 addPostErrorReason: action.error,
+            };
+        }
+        case ADD_COMMENT_REQUEST: {
+            return {
+                ...state,
+                isAddingComment: true,
+                addCommentErrorReason: '',
+                commentAdded: false,
+            };
+        }
+        case ADD_COMMENT_SUCCESS: {
+            const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
+            const post = state.mainPosts[postIndex];
+            const Comments = [...post.Comments, dummyComment];
+            const mainPosts = [...state.mainPosts];
+            mainPosts[postIndex] = { ...post, Comments };
+            return {
+                ...state,
+                isAddingComment: false,
+                mainPosts,
+                commentAdded: true,
+            };
+        }
+        case ADD_COMMENT_FAILURE: {
+            return {
+                ...state,
+                isAddingComment: false,
+                addCommentErrorReason: action.error,
             };
         }
         default: {
