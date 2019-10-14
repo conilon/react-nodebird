@@ -19,18 +19,6 @@ const initialState = {
     commentAdded: false,
 };
 
-const dummyPost = {
-    id: 2,
-    User: {
-        id: 2,
-        nickname: 'thmsy',
-    },
-    content: '두 번째 게시글',
-    img: 'https://w.namu.la/s/992a8aba82a1e00dd3f120bf3ff3e94a54e5a2cc70cd011c05b1e6abebfc715c261e3d5b719a30d4e2941180a43d44ff4ebc57b282475caa1fff82cb55bc5142efefa9cd1d754dbb98b7f29db282e3f66bcb5b12555bda684c75cce46179f2ca0be016c7d77ba5db8721608208963616',
-    Comments: [],
-    createdAt: new Date(),
-};
-
 const dummyComment = {
     id: 1,
     User: {
@@ -101,7 +89,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 isAddingPost: false,
-                mainPosts: [dummyPost, ...state.mainPosts],
+                mainPosts: [action.data, ...state.mainPosts],
                 postAdded: true,
             };
         }

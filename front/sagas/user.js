@@ -1,4 +1,4 @@
-import { all, fork, takeLatest, takeEvery, call, put, take, delay } from 'redux-saga/effects';
+import { all, fork, takeEvery, call, put } from 'redux-saga/effects';
 import axios from 'axios';
 import { 
     LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, 
@@ -6,8 +6,6 @@ import {
     LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE, 
     LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE,
 } from '../reducers/user';
-
-axios.defaults.baseURL = 'http://localhost:3065/api';
 
 function logInAPI(logInData) {
     // 서버에 요청을 보내는 부분

@@ -45,7 +45,6 @@ router.post('/', async (req, res, next) => { // POST /api/user 회원가입
             userId: req.body.userId,
             password: hashedPassword,
         });
-        console.log(newUser);
         return res.status(200).json(newUser);
     } catch (e) {
         console.error(e);
@@ -66,7 +65,6 @@ router.post('/logout', (req, res, next) => { // /api/logout
 
 router.post('/login', (req, res, next) => { // POST /api/user/login
     passport.authenticate('local', (err, user, info) => {
-        console.log(err, user, info);
         if (err) {
             console.error(err);
             return next(err);
@@ -78,7 +76,6 @@ router.post('/login', (req, res, next) => { // POST /api/user/login
             if (loginErr) {
                 return next(loginErr);
             }
-            console.log('req.user: ', req.user);
             const fullUser = await db.User.findOne({
                 where: { id: user.id },
                 include: [{
