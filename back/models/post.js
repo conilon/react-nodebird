@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Post.associate = (db) => {
-        db.Post.belongTo(db.User); // belongsTo로 인해 테이블에 UserId 컬럼이 생긴다.
+        db.Post.belongsTo(db.User); // belongsTo로 인해 테이블에 UserId 컬럼이 생긴다.
         db.Post.hasMany(db.Comment);
         db.Post.hasMany(db.Image);
         db.Post.belongsTo(db.Post, { as: 'Retweet' }); // belongsTo로 인해 RetweetId 컬럼이 생긴다.

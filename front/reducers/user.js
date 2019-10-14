@@ -1,8 +1,8 @@
 const dummyUser = {
     nickname: 'th',
-    Post: [],
-    Following: [],
-    Follower: [],
+    Posts: [],
+    Followings: [],
+    Followers: [],
     id: 1,
 };
 
