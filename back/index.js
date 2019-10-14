@@ -33,6 +33,7 @@ app.use(expressSession({
         httpOnly: true,
         secure: false, // https를 쓸 때 true로 한다.
     },
+    name: 'rnbck'
 }));
 app.use(passport.initialize());
 app.use(passport.session());
