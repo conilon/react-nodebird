@@ -4,6 +4,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const dotenv = require('dotenv');
+const passport = require('passport');
 
 const db = require('./models');
 const userAPIRouter = require('./routes/user');
@@ -28,6 +29,8 @@ app.use(expressSession({
         secure: false, // https를 쓸 때 true로 한다.
     },
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // API는 다른 서비스가 내 서비스의 기능을 실행할 수 있게 열여둔 창구
 app.use('/api/user', userAPIRouter);
