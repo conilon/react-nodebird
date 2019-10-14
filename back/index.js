@@ -18,9 +18,12 @@ db.sequelize.sync();
 passportConfig();
 
 app.use(morgan('dev'));
+app.use(cors({
+    origin: true,
+    credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(expressSession({
     resave: false,

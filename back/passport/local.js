@@ -5,11 +5,11 @@ const db = require('../models');
 
 module.exports = () => {
     passport.use(new LocalStorage({
-        usernameField: 'UserId',
+        usernameField: 'userId',
         passwordField: 'password',
     }, async (userId, password, done) => {
         try {
-            const user = await db.User.findeOne({ where: { userId }});
+            const user = await db.User.findOne({ where: { userId }});
             if (!user) {
                 return done(null, false, { reason: '존재하지 않는 사용자입니다.' });
             }

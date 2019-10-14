@@ -39,11 +39,14 @@ router.get('/:id', (req, res, next) => { // 남의 정보 가져오는 것 ex) /
 });
 
 router.post('/logout', (req, res, next) => { // /api/logout
-
+    req.logout();
+    req.session.destroy();
+    res.send('logout 성공');
 });
 
 router.post('/login', (req, res, next) => { // POST /api/user/login
     passport.authenticate('local', (err, user, info) => {
+        console.log(err, user, info);
         if (err) {
             console.error(err);
             return next(err);
@@ -55,7 +58,8 @@ router.post('/login', (req, res, next) => { // POST /api/user/login
             if (loginErr) {
                 return next(loginErr);
             }
-            const filteredUser = Object.assign({}, user);
+            console.log('login success: ', user);
+            const filteredUser = Object.assign({}, user.toJSON());
             delete filteredUser.password;
             return res.json(filteredUser);
         });
