@@ -34,12 +34,12 @@ const Signup = () => {
         return dispatch({
             type: SIGN_UP_REQUEST,
             data: {
-                id,
+                userId: id,
                 password,
                 nickname,
             },
         });
-    }, [password, passwordCheck, term]);
+    }, [id, nickname, password, passwordCheck, term]);
 
     const onChangeId = useCallback((e) => {
         setId(e.target.value);
