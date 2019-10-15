@@ -14,7 +14,10 @@ const PostForm = () => {
 
     const onSubmitForm = useCallback((e) => {
         e.preventDefault();
-        dispatch({
+        if (!text || !text.trim()) {
+            return alert('게시글을 작성하세요');
+        }
+        return dispatch({
             type: ADD_POST_REQUEST,
             data: {
                 content: text,
