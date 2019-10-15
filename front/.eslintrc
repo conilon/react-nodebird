@@ -34,6 +34,7 @@
         "react/jsx-one-expression-per-line": "off",
         "jsx-a11y/anchor-is-valid": "off",
         "no-alert": "off",
-        "max-len": "off"
+        "max-len": "off",
+        "react/jsx-props-no-spreading": "off"
     }
 }

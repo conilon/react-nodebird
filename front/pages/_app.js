@@ -10,14 +10,14 @@ import AppLayout from '../components/AppLayout';
 import reducer from '../reducers';
 import rootSaga from '../sagas';
 
-const Nodebird = ({ Component, store }) => (
+const Nodebird = ({ Component, store, pageProps }) => (
     <Provider store={store}>
         <Head>
             <title>NodeBird</title>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.23.6/antd.css" />
         </Head>
         <AppLayout>
-            <Component />
+            <Component {...pageProps} />
         </AppLayout>
     </Provider>
 );
@@ -25,6 +25,16 @@ const Nodebird = ({ Component, store }) => (
 Nodebird.propTypes = {
     Component: PropTypes.elementType.isRequired,
     store: PropTypes.object.isRequired,
+    pageProps: PropTypes.object.isRequired,
+};
+
+Nodebird.getInitialProps = async (context) => {
+    const { ctx, Component } = context;
+    let pageProps = {};
+    if (Component.getInitialProps) {
+        pageProps = await Component.getInitialProps(ctx);
+    }
+    return { pageProps };
 };
 
 const configureStore = (initialState, options) => {

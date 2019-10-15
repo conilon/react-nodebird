@@ -6,7 +6,7 @@ const expressSession = require('express-session');
 const dotenv = require('dotenv');
 
 const dev = process.env.NODE_ENV !== 'production';
-const prod = process.env.NODE_ENV === 'production';
+// const prod = process.env.NODE_ENV === 'production';
 
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -29,9 +29,9 @@ app.prepare().then(() => {
         },
     }));
     
-    server.get('*', (req, res) => {
-        return handle(req, res);
-    });
+    server.get('/hashtag/:tag', (req, res) => app.render(req, res, '/hashtag', { tag: req.params.tag }));
+    server.get('/user/:id', (req, res) => app.render(req, res, '/user', { id: req.params.tag }));
+    server.get('*', (req, res) => handle(req, res));
 
     server.listen(3060, () => {
         console.log('next + express running on port 3060');
