@@ -24,7 +24,7 @@ router.get('/', async (req, res, next) => { // /api/user/
             as: 'Followers',
             attributes: ['id'],
         }],
-        attributes: ['id', 'nickname', 'userId'],
+        attributes: ['id', 'nickname'],
     })
     return res.json(fullUser);
 });
@@ -53,8 +53,34 @@ router.post('/', async (req, res, next) => { // POST /api/user 회원가입
     }
 });
 
-router.get('/:id', (req, res, next) => { // 남의 정보 가져오는 것 ex) /api/user/3
-
+router.get('/:id', async (req, res, next) => { // 남의 정보 가져오는 것 ex) /api/user/3
+    try {
+        const user = await db.User.findOne({
+            where: { id: parseInt(req.params.id, 10) },
+            include: [{
+                model: db.Post,
+                as: 'Posts',
+                attributes: ['id'],
+            }, {
+                model: db.User,
+                as: 'Followings',
+                attributes: ['id'],
+            }, {
+                model: db.User,
+                as: 'Followers',
+                attributes: ['id'],
+            }],
+            attributes: ['id', 'nickname'],
+        });
+        const jsonUser = user.toJSON();
+        jsonUser.Posts = jsonUser.Posts ? jsonUser.Posts.length : 0;
+        jsonUser.Followings = jsonUser.Followings ? jsonUser.Followings.length : 0;
+        jsonUser.Followers = jsonUser.Followers ? jsonUser.Followers.length : 0;
+        return res.json(jsonUser);
+    } catch (e) {
+        console.error(e);
+        return next(e);
+    }
 });
 
 router.post('/logout', (req, res, next) => { // /api/logout
@@ -110,8 +136,23 @@ router.delete('/:id/follower', (req, res, next) => {
 
 });
 
-router.get('/:id/posts', (req, res, next) => {
-
+router.get('/:id/posts', async (req, res, next) => {
+    try {
+        const posts = await db.Post.findAll({
+            where: { 
+                UserId: parseInt(req.params.id, 10),
+                RetweetId: null,
+            },
+            include: [{
+                model: db.Posts,
+                attributes: ['id', 'nickname'],
+            }],
+        });
+        return res.json(posts);
+    } catch (e) {
+        console.error(e);
+        return next(e);
+    }
 });
 
 module.exports = router;
