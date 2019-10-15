@@ -13,7 +13,7 @@ const Hashtag = ({ tag }) => {
             type: LOAD_HASHTAG_POSTS_REQUEST,
             data: tag,
         });
-    }, []);
+    }, [tag]);
 
     return (
         <div>

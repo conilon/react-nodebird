@@ -144,7 +144,7 @@ router.get('/:id/posts', async (req, res, next) => {
                 RetweetId: null,
             },
             include: [{
-                model: db.Posts,
+                model: db.User,
                 attributes: ['id', 'nickname'],
             }],
         });

@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import Link from 'next/link';
 import { Card, Avatar, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { LOG_OUT_REQUEST } from '../reducers/user';
@@ -22,8 +23,8 @@ const UserProfile = () => {
             ]}
         >
             <Card.Meta 
-                avatar={<Avatar>{me.nickname[0]}</Avatar>}
-                title={me.nickname}
+                avatar={<Link href={{ pathname: '/user', query: { id: me.id } }} as={`/user/${me.id}`}><a><Avatar>{me.nickname[0]}</Avatar></a></Link>}
+                title={<Link href={{ pathname: '/user', query: { id: me.id } }} as={`/user/${me.id}`}><a style={{ textDecoration: 'none', color: '#000' }}>{me.nickname}</a></Link>}
             />
             <Button onClick={onLogout}>로그아웃</Button>
         </Card>
