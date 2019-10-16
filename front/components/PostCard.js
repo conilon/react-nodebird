@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Card, Icon, Button, Avatar, Form, Input, List, Comment } from 'antd';
-import { ADD_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST } from '../reducers/post';
+import { ADD_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST, UNLIKE_POST_REQUEST, LIKE_POST_REQUEST } from '../reducers/post';
 import PostImages from './PostImages';
 
 const PostCard = ({ post }) => {
@@ -12,7 +12,9 @@ const PostCard = ({ post }) => {
     const { me } = useSelector((state) => state.user);
     const { commentAdded, isAddingComment } = useSelector((state) => state.post);
     const dispatch = useDispatch();
-    
+
+    const liked = me && post.Likers && post.Likers.find((v) => v.id === me.id);
+
     const onToggleComment = useCallback(() => {
         setCommentFormOpened((prev) => !prev);
         if (!commentFormOpened) {
@@ -28,11 +30,14 @@ const PostCard = ({ post }) => {
         if (!me) {
             return alert('로그인이 필요합니다.');
         }
+        if (!commentText || !commentText.trim()) {
+            return alert('댓글을 작성하세요.');
+        }
         return dispatch({
             type: ADD_COMMENT_REQUEST,
             data: {
                 postId: post.id,
-                content: commentText,
+                content: commentText.trim(),
             },
         });
     }, [me && me.id, commentText]);
@@ -45,6 +50,22 @@ const PostCard = ({ post }) => {
         setCommentText(e.target.value);
     }, []);
 
+    const onToggleLike = useCallback(() => {
+        if (!me) {
+            return alert('로그인이 필요합니다.');
+        }
+        if (liked) { // 좋아요 누른 상태
+            return dispatch({
+                type: UNLIKE_POST_REQUEST,
+                data: post.id,
+            });
+        } 
+        return dispatch({ // 좋아요 안 누른 상태
+            type: LIKE_POST_REQUEST,
+            data: post.id,
+        });
+    }, [me && me.id, post && post.id, liked]);
+
     return (
         <div>
             <Card
@@ -52,7 +73,7 @@ const PostCard = ({ post }) => {
                 cover={post.Images[0] && <PostImages images={post.Images} />}
                 actions={[
                     <Icon type="retweet" key="retweet" />,
-                    <Icon type="heart" key="heart" />,
+                    <Icon type="heart" key="heart" theme={liked ? 'twoTone' : 'outlined'} twoToneColor="#eb3f96" onClick={onToggleLike} />,
                     <Icon type="message" key="message" onClick={onToggleComment} />,
                     <Icon type="ellipsis" key="ellipsis" />,
                 ]}
@@ -114,6 +135,7 @@ PostCard.propTypes = {
         createAt: PropTypes.object,
         Comments: PropTypes.array,
         id: PropTypes.number,
+        Likers: PropTypes.array,
     }).isRequired,
 };
 

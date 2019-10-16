@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const db = require('../models');
-const { isLoggedIn, exPost } = require('./middleware');
+const { isLoggedIn } = require('./middleware');
 
 const router = express.Router();
 
@@ -65,11 +65,15 @@ router.post('/images', upload.array('image'), (req, res, next) => {
     res.json(req.files.map((v) => v.filename));
 });
 
-router.get('/:id/comments', exPost, async (req, res, next) => { // GET /api/post/14/comments
+router.get('/:id/comments', async (req, res, next) => { // GET /api/post/14/comments
     try {
+        const post = await db.Post.findOne({ where: { id: req.params.id } });
+        if (!post) {
+            return res.status(404).send('포스트가 존재하지 않습니다.');
+        }
         const comments = await db.Comment.findAll({
             where: {
-                PostId: req.params.id,
+                PostId: post.id,
             },
             order: [['createdAt', 'ASC']],
             include: [{
@@ -84,8 +88,12 @@ router.get('/:id/comments', exPost, async (req, res, next) => { // GET /api/post
     }
 });
 
-router.post('/:id/comment', isLoggedIn, exPost, async (req, res, next) => { // POST /api/post/10000/comment
+router.post('/:id/comment', isLoggedIn, async (req, res, next) => { // POST /api/post/10000/comment
     try {
+        const post = await db.Post.findOne({ where: { id: req.params.id } });
+        if (!post) {
+            return res.status(404).send('포스트가 존재하지 않습니다.');
+        }
         const newComment = await db.Comment.create({
             PostId: post.id,
             UserId: req.user.id,
@@ -102,6 +110,34 @@ router.post('/:id/comment', isLoggedIn, exPost, async (req, res, next) => { // P
             }],
         })
         return res.json(comment);
+    } catch (e) {
+        console.error(e);
+        return next(e);
+    }
+});
+
+router.post('/:id/like', isLoggedIn, async (req, res, next) => { // POST /api/post/10000/like
+    try {
+        const post = await db.Post.findOne({ where: { id: req.params.id } });
+        if (!post) {
+            return res.status(404).send('포스트가 존재하지 않습니다.');
+        }
+        await post.addLikers(req.user.id);
+        return res.json({ userId: req.user.id });
+    } catch (e) {
+        console.error(e);
+        return next(e);
+    }
+});
+
+router.delete('/:id/like', isLoggedIn, async (req, res, next) => { // POST /api/post/10000/like
+    try {
+        const post = await db.Post.findOne({ where: { id: req.params.id } });
+        if (!post) {
+            return res.status(404).send('포스트가 존재하지 않습니다.');
+        }
+        await post.removeLikers(req.user.id);
+        return res.json({ userId: req.user.id });
     } catch (e) {
         console.error(e);
         return next(e);

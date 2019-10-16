@@ -7,6 +7,7 @@ const PostForm = () => {
     const [text, setText] = useState('');
     const [images, setImages] = useState('');
     const imageInput = useRef();
+    const { me } = useSelector((state) => state.user);
     const { isAddingPost, imagePaths, postAdded } = useSelector((state) => state.post);
     const dispatch = useDispatch();
 
@@ -20,8 +21,11 @@ const PostForm = () => {
 
     const onSubmitForm = useCallback((e) => {
         e.preventDefault();
+        if (!me) {
+            return alert('로그인이 필요합니다.');
+        }
         if (!text || !text.trim()) {
-            return alert('게시글을 작성하세요');
+            return alert('게시글을 작성하세요.');
         }
         const formData = new FormData();
         imagePaths.forEach((i) => {
