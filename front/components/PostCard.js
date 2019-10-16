@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Card, Icon, Button, Avatar, Form, Input, List, Comment } from 'antd';
 import { ADD_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST } from '../reducers/post';
+import PostImages from './PostImages';
 
 const PostCard = ({ post }) => {
     const [commentFormOpened, setCommentFormOpened] = useState(false);
@@ -48,7 +49,7 @@ const PostCard = ({ post }) => {
         <div>
             <Card
                 key={+post.createAt}
-                cover={post.img && <img src={post.img} alt="example" />}
+                cover={post.Images[0] && <PostImages images={post.Images} />}
                 actions={[
                     <Icon type="retweet" key="retweet" />,
                     <Icon type="heart" key="heart" />,
@@ -107,7 +108,9 @@ PostCard.propTypes = {
     post: PropTypes.shape({
         User: PropTypes.object,
         content: PropTypes.string,
-        img: PropTypes.string,
+        Images: PropTypes.arrayOf(PropTypes.shape({
+            src: PropTypes.string,
+        })).isRequired,
         createAt: PropTypes.object,
         Comments: PropTypes.array,
         id: PropTypes.number,
