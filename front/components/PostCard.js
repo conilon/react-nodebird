@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Card, Icon, Button, Avatar, Form, Input, List, Comment } from 'antd';
 import { ADD_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST, UNLIKE_POST_REQUEST, LIKE_POST_REQUEST, RETWEET_REQUEST } from '../reducers/post';
 import PostImages from './PostImages';
+import PostCardContent from './PostCardContent';
 
 const PostCard = ({ post }) => {
     const [commentFormOpened, setCommentFormOpened] = useState(false);
@@ -80,31 +81,51 @@ const PostCard = ({ post }) => {
         <div>
             <Card
                 key={+post.createAt}
-                cover={post.Images[0] && <PostImages images={post.Images} />}
+                cover={post.Images && post.Images[0] && <PostImages images={post.Images} />}
                 actions={[
                     <Icon type="retweet" key="retweet" onClick={onRetweet} />,
                     <Icon type="heart" key="heart" theme={liked ? 'twoTone' : 'outlined'} twoToneColor="#eb3f96" onClick={onToggleLike} />,
                     <Icon type="message" key="message" onClick={onToggleComment} />,
                     <Icon type="ellipsis" key="ellipsis" />,
                 ]}
+                title={post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null}
                 extra={<Button>팔로우</Button>}
             >
-                <Card.Meta 
-                    avatar={<Link href={{ pathname: '/user', query: { id: post.User.id } }} as={`/user/${post.User.id}`}><a><Avatar>{post.User.nickname[0]}</Avatar></a></Link>}
-                    title={<Link href={{ pathname: '/user', query: { id: post.User.id } }} as={`/user/${post.User.id}`}><a style={{ textDecoration: 'none', color: '#000' }}>{post.User.nickname}</a></Link>}
-                    description={(
-                        <div>
-                            {post.content.split(/(#[^\s]+)/g).map((v) => {
-                                if (v.match(/#[^\s]+/)) {
-                                    return (
-                                        <Link key={v} href={{ pathname: '/hashtag', query: { tag: v.slice(1) } }} as={`/hashtag/${v.slice(1)}`}><a>{v}</a></Link>
-                                    );
-                                }
-                                return v;
-                            })}
-                        </div>
+                {post.RetweetId && post.Retweet 
+                    ? (
+                        <Card
+                            cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}
+                        >
+                            <Card.Meta 
+                                avatar={(
+                                    <Link href={{ pathname: '/user', query: { id: post.Retweet.User.id } }} as={`/user/${post.Retweet.User.id}`}>
+                                        <a><Avatar>{post.Retweet.User.nickname[0]}</Avatar></a>
+                                    </Link>
+                                )}
+                                title={(
+                                    <Link href={{ pathname: '/user', query: { id: post.Retweet.User.id } }} as={`/user/${post.Retweet.User.id}`}>
+                                        <a style={{ textDecoration: 'none', color: '#000' }}>{post.Retweet.User.nickname}</a>
+                                    </Link>
+                                )}
+                                description={<PostCardContent postData={post.Retweet.content} />}
+                            />
+                        </Card>
+                    )
+                    : (
+                        <Card.Meta 
+                            avatar={(
+                                <Link href={{ pathname: '/user', query: { id: post.User.id } }} as={`/user/${post.User.id}`}>
+                                    <a><Avatar>{post.User.nickname[0]}</Avatar></a>
+                                </Link>
+                            )}
+                            title={(
+                                <Link href={{ pathname: '/user', query: { id: post.User.id } }} as={`/user/${post.User.id}`}>
+                                    <a style={{ textDecoration: 'none', color: '#000' }}>{post.User.nickname}</a>
+                                </Link>
+                            )}
+                            description={<PostCardContent postData={post.content} />}
+                        />
                     )}
-                />
             </Card>
             {commentFormOpened && (
                 <>
@@ -139,13 +160,13 @@ PostCard.propTypes = {
     post: PropTypes.shape({
         User: PropTypes.object,
         content: PropTypes.string,
-        Images: PropTypes.arrayOf(PropTypes.shape({
-            src: PropTypes.string,
-        })).isRequired,
+        Images: PropTypes.array,
         createAt: PropTypes.object,
         Comments: PropTypes.array,
         id: PropTypes.number,
         Likers: PropTypes.array,
+        Retweet: PropTypes.object,
+        RetweetId: PropTypes.number,
     }).isRequired,
 };
 
