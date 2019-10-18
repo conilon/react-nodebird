@@ -128,6 +128,8 @@ router.get('/:id/followings', isLoggedIn, async (req, res, next) => { // /api/us
             where: { id: parseInt(req.params.id, 10) || (req.user && req.user.id) || 0 },
         })
         const followings = await user.getFollowings({
+            limit: parseInt(req.query.limit, 10),
+            offset: parseInt(req.query.offset, 10),
             attributes: ['id', 'nickname'],
         });
         return res.json(followings);
@@ -143,6 +145,8 @@ router.get('/:id/followers', isLoggedIn, async (req, res, next) => { // /api/use
             where: { id: parseInt(req.params.id, 10) || (req.user && req.user.id) || 0 },
         })
         const followers = await user.getFollowers({
+            limit: parseInt(req.query.limit, 10),
+            offset: parseInt(req.query.offset, 10),
             attributes: ['id', 'nickname'],
         });
         return res.json(followers);
