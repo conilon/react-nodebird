@@ -191,10 +191,6 @@ router.delete('/:id/follow', isLoggedIn, async (req, res, next) => {
     }
 });
 
-router.delete('/:id/follower', (req, res, next) => {
-
-});
-
 router.get('/:id/posts', async (req, res, next) => {
     try {
         const posts = await db.Post.findAll({
@@ -215,6 +211,20 @@ router.get('/:id/posts', async (req, res, next) => {
             }],
         });
         return res.json(posts);
+    } catch (e) {
+        console.error(e);
+        return next(e);
+    }
+});
+
+router.patch('/nickname', isLoggedIn, async (req, res, next) => {
+    try {
+        await db.User.update({
+            nickname: req.body.nickname,
+        }, {
+            where: { id: req.user.id },
+        });
+        return res.send(req.body.nickname);
     } catch (e) {
         console.error(e);
         return next(e);
