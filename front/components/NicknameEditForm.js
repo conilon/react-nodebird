@@ -10,7 +10,7 @@ const NicknameEditForm = () => {
 
     useEffect(() => {
         setEditedName(me && me.nickname);
-    }, [me && me.nickname]);
+    }, []);
 
     const onChangeNickname = useCallback((e) => {
         setEditedName(e.target.value);
