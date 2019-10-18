@@ -76,6 +76,10 @@ const Signup = () => {
     // custom hook 생성 방법
     const [id, onChangeId] = useInput('');
     */
+    
+    if (me) {
+        return null;
+    }
 
     return (
         <>

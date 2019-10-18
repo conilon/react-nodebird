@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, List, Card, Icon } from 'antd';
+import Router from 'next/router';
 import NicknameEditForm from '../components/NicknameEditForm';
 import { LOAD_FOLLOWINGS_REQUEST, LOAD_FOLLOWERS_REQUEST, UNFOLLOW_USER_REQUEST, REMOVE_FOLLOWER_REQUEST } from '../reducers/user';
 import { LOAD_USER_POSTS_REQUEST } from '../reducers/post';
@@ -10,6 +11,15 @@ const Profile = () => {
     const { followingList, followerList } = useSelector((state) => state.user);
     const { mainPosts } = useSelector((state) => state.post);
     const dispatch = useDispatch();
+
+    const { me } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (!me) {
+            alert('로그인 정보가 없습니다. 메인페이지로 이동합니다.');
+            Router.push('/');
+        }
+    }, [me && me.id]);
 
     const onUnfollow = useCallback((userId) => () => {
         dispatch({
@@ -24,6 +34,10 @@ const Profile = () => {
             data: userId,
         });
     }, []);
+
+    if (!me) {
+        return null;
+    }
 
     return (
         <div>

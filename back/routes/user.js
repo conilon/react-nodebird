@@ -209,6 +209,7 @@ router.get('/:id/posts', async (req, res, next) => {
                 as: 'Likers',
                 attributes: ['id'],
             }],
+            order: [['createdAt', 'DESC']],
         });
         return res.json(posts);
     } catch (e) {
