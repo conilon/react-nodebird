@@ -1,32 +1,15 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, List, Card, Icon } from 'antd';
 import NicknameEditForm from '../components/NicknameEditForm';
-import { LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST, UNFOLLOW_USER_REQUEST, REMOVE_FOLLOWER_REQUEST } from '../reducers/user';
+import { LOAD_FOLLOWINGS_REQUEST, LOAD_FOLLOWERS_REQUEST, UNFOLLOW_USER_REQUEST, REMOVE_FOLLOWER_REQUEST } from '../reducers/user';
 import { LOAD_USER_POSTS_REQUEST } from '../reducers/post';
 import PostCard from '../components/PostCard';
 
 const Profile = () => {
-    const { me, followingList, followerList } = useSelector((state) => state.user);
+    const { followingList, followerList } = useSelector((state) => state.user);
     const { mainPosts } = useSelector((state) => state.post);
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        if (me) {
-            dispatch({
-                type: LOAD_FOLLOWINGS_REQUEST,
-                data: me.id,
-            });
-            dispatch({
-                type: LOAD_FOLLOWERS_REQUEST,
-                data: me.id,
-            });
-            dispatch({
-                type: LOAD_USER_POSTS_REQUEST,
-                data: me.id,
-            });
-        }
-    }, [me && me.id]);
 
     const onUnfollow = useCallback((userId) => () => {
         dispatch({
@@ -84,6 +67,25 @@ const Profile = () => {
             </div>
         </div>
     );
+};
+
+Profile.getInitialProps = (context) => {
+    const state = context.store.getState();
+    // 이 직전에 LOAD_USERS_REQUEST
+    context.store.dispatch({
+        type: LOAD_FOLLOWINGS_REQUEST,
+        data: state.user.me && state.user.me.id,
+    });
+    context.store.dispatch({
+        type: LOAD_FOLLOWERS_REQUEST,
+        data: state.user.me && state.user.me.id,
+    });
+    context.store.dispatch({
+        type: LOAD_USER_POSTS_REQUEST,
+        data: state.user.me && state.user.me.id,
+    });
+
+    // 이 쯤에서 LOAD_USER_SUCCESS 돼서 me가 생긴다.
 };
 
 export default Profile;
