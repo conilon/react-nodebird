@@ -122,8 +122,47 @@ router.post('/login', (req, res, next) => { // POST /api/user/login
     })(req, res, next);
 });
 
-router.get('/:id/follow', (req, res, next) => { // /api/user/:id/follow
+router.get('/:id/followings', isLoggedIn, async (req, res, next) => { // /api/user/:id/followings
+    try {
+        const user = await db.User.findOne({
+            where: { id: parseInt(req.params.id, 10) },
+        })
+        const followings = await user.getFollowings({
+            attributes: ['id', 'nickname'],
+        });
+        return res.json(followings);
+    } catch (e) {
+        console.error(e);
+        return next(e);
+    }
+});
 
+router.get('/:id/followers', isLoggedIn, async (req, res, next) => { // /api/user/:id/followers
+    try {
+        const user = await db.User.findOne({
+            where: { id: parseInt(req.params.id, 10) },
+        })
+        const followers = await user.getFollowers({
+            attributes: ['id', 'nickname'],
+        });
+        return res.json(followers);
+    } catch (e) {
+        console.error(e);
+        return next(e);
+    }
+});
+
+router.delete('/:id/follower', isLoggedIn, async (req, res, next) => {
+    try {
+        const me = await db.User.findOne({
+            where: { id: req.user.id },
+        });
+        await me.removeFollower(req.params.id);
+        return res.send(req.params.id);
+    } catch (e) {
+        console.error(e);
+        return next(e);
+    }
 });
 
 router.post('/:id/follow', isLoggedIn, async (req, res, next) => {

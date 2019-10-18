@@ -7,6 +7,8 @@ import {
     LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE, 
     FOLLOW_USER_REQUEST, FOLLOW_USER_SUCCESS, FOLLOW_USER_FAILURE, 
     UNFOLLOW_USER_REQUEST, UNFOLLOW_USER_SUCCESS, UNFOLLOW_USER_FAILURE,
+    LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWERS_SUCCESS, LOAD_FOLLOWERS_FAILURE,
+    LOAD_FOLLOWINGS_REQUEST, LOAD_FOLLOWINGS_SUCCESS, LOAD_FOLLOWINGS_FAILURE, REMOVE_FOLLOWER_REQUEST, REMOVE_FOLLOWER_SUCCESS, REMOVE_FOLLOWER_FAILURE,
 } from '../reducers/user';
 
 function logInAPI(logInData) {
@@ -162,6 +164,84 @@ function* watchUnfollow() {
     yield takeEvery(UNFOLLOW_USER_REQUEST, unFollow);
 }
 
+function loadFollowersAPI(userId) {
+    return axios.get(`/user/${userId}/followers`, {
+        withCredentials: true,
+    });
+}
+
+function* loadFollowers(action) {
+    try {
+        const result = yield call(loadFollowersAPI, action.data);
+        yield put({
+            type: LOAD_FOLLOWERS_SUCCESS,
+            data: result.data,
+        });
+    } catch (e) {
+        console.error(e);
+        yield put({
+            type: LOAD_FOLLOWERS_FAILURE,
+            erorr: e,
+        });
+    }
+}
+
+function* watchLoadFollwers() {
+    yield takeEvery(LOAD_FOLLOWERS_REQUEST, loadFollowers);
+}
+
+function loadFollowingsAPI(userId) {
+    return axios.get(`/user/${userId}/followings`, {
+        withCredentials: true,
+    });
+}
+
+function* loadFollowings(action) {
+    try {
+        const result = yield call(loadFollowingsAPI, action.data);
+        yield put({
+            type: LOAD_FOLLOWINGS_SUCCESS,
+            data: result.data,
+        });
+    } catch (e) {
+        console.error(e);
+        yield put({
+            type: LOAD_FOLLOWINGS_FAILURE,
+            erorr: e,
+        });
+    }
+}
+
+function* watchLoadFollwings() {
+    yield takeEvery(LOAD_FOLLOWINGS_REQUEST, loadFollowings);
+}
+
+function removeFollowerAPI(userId) {
+    return axios.delete(`/user/${userId}/follower`, {
+        withCredentials: true,
+    });
+}
+
+function* removeFollower(action) {
+    try {
+        const result = yield call(removeFollowerAPI, action.data);
+        yield put({
+            type: REMOVE_FOLLOWER_SUCCESS,
+            data: result.data,
+        });
+    } catch (e) {
+        console.error(e);
+        yield put({
+            type: REMOVE_FOLLOWER_FAILURE,
+            erorr: e,
+        });
+    }
+}
+
+function* watchRemoveFollower() {
+    yield takeEvery(REMOVE_FOLLOWER_REQUEST, removeFollower);
+}
+
 export default function* userSaga() {
     yield all([
         fork(watchLogIn),
@@ -170,5 +250,8 @@ export default function* userSaga() {
         fork(watchSignUp),
         fork(watchFollow),
         fork(watchUnfollow),
+        fork(watchLoadFollwers),
+        fork(watchLoadFollwings),
+        fork(watchRemoveFollower),
     ]);
 }
