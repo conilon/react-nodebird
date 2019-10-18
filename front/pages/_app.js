@@ -55,6 +55,13 @@ Nodebird.getInitialProps = async (context) => {
 const configureStore = (initialState, options) => {
     const sagaMiddleware = createSagaMiddleware();
     const middlewares = [sagaMiddleware];
+    /*
+    // 리덕스 사가 액션 로깅하기
+    const middlewares = [sagaMiddleware, (store) => (next) => (action) => {
+        console.log(action);
+        next(action);
+    }];
+    */
     const enhancer = process.env.NODE_ENV === 'production'
         ? compose(applyMiddleware(...middlewares))
         : compose(

@@ -1,19 +1,10 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { LOAD_HASHTAG_POSTS_REQUEST } from '../reducers/post';
 import PostCard from '../components/PostCard';
 
-const Hashtag = ({ tag }) => {
-    const dispatch = useDispatch();
+const Hashtag = () => {
     const { mainPosts } = useSelector((state) => state.post);
-
-    useEffect(() => {
-        dispatch({
-            type: LOAD_HASHTAG_POSTS_REQUEST,
-            data: tag,
-        });
-    }, [tag]);
 
     return (
         <div>
@@ -24,12 +15,13 @@ const Hashtag = ({ tag }) => {
     );
 };
 
-Hashtag.propTypes = {
-    tag: PropTypes.string.isRequired,
+Hashtag.getInitialProps = async (context) => {
+    const { tag } = context.query;
+    context.store.dispatch({
+        type: LOAD_HASHTAG_POSTS_REQUEST,
+        data: tag,
+    });
+    return { tag };
 };
-
-Hashtag.getInitialProps = async (context) => ({
-    tag: context.query.tag,
-});
 
 export default Hashtag;
