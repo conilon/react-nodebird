@@ -6,10 +6,12 @@ import withReduxSaga from 'next-redux-saga';
 import { createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
+import axios from 'axios';
 
 import AppLayout from '../components/AppLayout';
 import reducer from '../reducers';
 import rootSaga from '../sagas';
+import { LOAD_USER_REQUEST } from '../reducers/user';
 
 const Nodebird = ({ Component, store, pageProps }) => (
     <Provider store={store}>
@@ -34,8 +36,18 @@ Nodebird.propTypes = {
 Nodebird.getInitialProps = async (context) => {
     const { ctx, Component } = context;
     let pageProps = {};
+    const state = ctx.store.getState();
+    const cookie = ctx.isServer ? ctx.req.headers.cookie : '';
+    if (ctx.isServer && cookie) {
+        axios.defaults.headers.Cookie = cookie;
+    }
+    if (!state.user.me) {
+        ctx.store.dispatch({
+            type: LOAD_USER_REQUEST,
+        });
+    }
     if (Component.getInitialProps) {
-        pageProps = await Component.getInitialProps(ctx);
+        pageProps = await Component.getInitialProps(ctx) || {};
     }
     return { pageProps };
 };
