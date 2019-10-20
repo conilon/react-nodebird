@@ -49,6 +49,7 @@ Nodebird.getInitialProps = async (context) => {
     if (Component.getInitialProps) {
         pageProps = await Component.getInitialProps(ctx) || {};
     }
+
     return { pageProps };
 };
 

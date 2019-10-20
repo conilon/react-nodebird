@@ -1,4 +1,4 @@
-import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
+import { all, fork, takeLatest, call, throttle, put } from 'redux-saga/effects';
 import axios from 'axios';
 import { 
     ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE, 
@@ -24,7 +24,6 @@ function addPostAPI(postData) {
 function* addPost(action) {
     try {
         const result = yield call(addPostAPI, action.data);
-        console.log(result);
         yield put({ // post reducer의 데이터를 수정
             type: ADD_POST_SUCCESS,
             data: result.data,
@@ -67,7 +66,7 @@ function* loadMainPosts(action) {
 }
 
 function* watchLoadMainPosts() {
-    yield takeLatest(LOAD_MAIN_POSTS_REQUEST, loadMainPosts);
+    yield throttle(2000, LOAD_MAIN_POSTS_REQUEST, loadMainPosts);
 }
 
 function loadHashtagPostsAPI(tag, lastId = 0, limit = 10) {
@@ -91,7 +90,7 @@ function* loadHashtagPosts(action) {
 }
 
 function* watchLoadHashtagPosts() {
-    yield takeLatest(LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts);
+    yield throttle(3000, LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts);
 }
 
 function loadUserPostsAPI(id) {
