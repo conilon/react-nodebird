@@ -80,7 +80,6 @@ router.get('/:id', async (req, res, next) => {
                 model: db.Image,
             }]
         });
-        console.log('post: asdfdsafsdafsdafsdaf: ', post);
         if (!post) {
             return res.status(404).send('포스트가 존재하지 않습니다.');
         }
