@@ -29,6 +29,7 @@ app.prepare().then(() => {
         },
     }));
     
+    server.get('/post/:id', (req, res) => app.render(req, res, '/post', { id: req.params.id }));
     server.get('/hashtag/:tag', (req, res) => app.render(req, res, '/hashtag', { tag: req.params.tag }));
     server.get('/user/:id', (req, res) => app.render(req, res, '/user', { id: req.params.id }));
     server.get('*', (req, res) => handle(req, res));
