@@ -12,3 +12,6 @@ node_modules/
 
 # uploads folder
 uploads/
+
+# next-bundle-analyzer
+bundles/

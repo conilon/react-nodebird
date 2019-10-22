@@ -5,19 +5,22 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "build": "next build",
-    "start": "next start"
+    "build": "cross-env BUNDLE_ANALYZE=both next build",
+    "start": "cross-env NODE_ENV=production next start"
   },
   "author": "th",
   "license": "ISC",
   "dependencies": {
+    "@zeit/next-bundle-analyzer": "^0.1.2",
     "antd": "^3.23.6",
     "axios": "^0.19.0",
     "cookie-parser": "^1.4.4",
+    "cross-env": "^6.0.3",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "immer": "^4.0.1",
+    "moment": "^2.24.0",
     "morgan": "^1.9.1",
     "next": "^9.1.1",
     "next-redux-saga": "^4.0.2",
