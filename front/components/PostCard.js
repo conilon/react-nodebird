@@ -107,7 +107,6 @@ const PostCard = ({ post }) => {
     return (
         <CardWrapper>
             <Card
-                key={+post.createAt}
                 cover={post.Images && post.Images[0] && <PostImages images={post.Images} />}
                 actions={[
                     <Icon type="retweet" key="retweet" onClick={onRetweet} />,

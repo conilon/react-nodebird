@@ -5,7 +5,7 @@ import Document, { Main, NextScript } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
 
 class MyDocument extends Document {
-    static async getInitialProps(context) {
+    static getInitialProps(context) {
         const sheet = new ServerStyleSheet();
         const page = context.renderPage((App) => (props) => sheet.collectStyles(<App {...props} />));
         const styleTags = sheet.getStyleElement();
@@ -34,7 +34,7 @@ class MyDocument extends Document {
 
 MyDocument.propTypes = {
     helmet: PropTypes.object.isRequired,
-    styleTags: PropTypes.object.isRequired,
+    styleTags: PropTypes.array.isRequired,
 };
 
 export default MyDocument;

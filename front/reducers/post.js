@@ -155,8 +155,8 @@ const reducer = (state = initialState, action) => (
             case LOAD_MAIN_POSTS_REQUEST:
             case LOAD_HASHTAG_POSTS_REQUEST:
             case LOAD_USER_POSTS_REQUEST: {
-                draft.mainPosts = !action.lastId ? [] : state.mainPosts;
-                draft.hasMorePost = action.lastId ? state.hasMorePost : true;
+                draft.mainPosts = !action.lastId ? [] : draft.mainPosts;
+                draft.hasMorePost = action.lastId ? draft.hasMorePost : true;
                 break;
             }
             case LOAD_MAIN_POSTS_SUCCESS:
