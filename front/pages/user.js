@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Card, Avatar } from 'antd';
 import { LOAD_USER_REQUEST } from '../reducers/user';
 import { LOAD_USER_POSTS_REQUEST } from '../reducers/post';
-import PostCard from '../components/PostCard';
+import PostCard from '../containers/PostCard';
 
 const User = () => {
     const { mainPosts } = useSelector((state) => state.post);

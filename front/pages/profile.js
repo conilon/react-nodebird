@@ -2,10 +2,10 @@ import React, { useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, List, Card, Icon } from 'antd';
 import Router from 'next/router';
-import NicknameEditForm from '../components/NicknameEditForm';
+import NicknameEditForm from '../containers/NicknameEditForm';
 import { LOAD_FOLLOWINGS_REQUEST, LOAD_FOLLOWERS_REQUEST, UNFOLLOW_USER_REQUEST, REMOVE_FOLLOWER_REQUEST } from '../reducers/user';
 import { LOAD_USER_POSTS_REQUEST } from '../reducers/post';
-import PostCard from '../components/PostCard';
+import PostCard from '../containers/PostCard';
 
 const Profile = () => {
     const { me, followingList, followerList, hasMoreFollowing, hasMoreFollower } = useSelector((state) => state.user);

@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { Menu, Input, Row, Col } from 'antd';
 import { useSelector } from 'react-redux';
 import Router from 'next/router';
-import UserProfile from './UserProfile';
-import LoginForm from './LoginForm';
+import UserProfile from '../containers/UserProfile';
+import LoginForm from '../containers/LoginForm';
 
 const AppLayout = ({ children }) => {
     const { me } = useSelector((state) => state.user);
