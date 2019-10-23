@@ -1,13 +1,14 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Card, Icon, Button, Avatar, Form, Input, List, Comment, Popover } from 'antd';
+import { Card, Icon, Button, Avatar, List, Comment, Popover } from 'antd';
 import styled from 'styled-components';
 import moment from 'moment';
-import { ADD_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST, UNLIKE_POST_REQUEST, LIKE_POST_REQUEST, RETWEET_REQUEST, REMOVE_POST_REQUEST } from '../reducers/post';
+import { LOAD_COMMENTS_REQUEST, UNLIKE_POST_REQUEST, LIKE_POST_REQUEST, RETWEET_REQUEST, REMOVE_POST_REQUEST } from '../reducers/post';
 import PostImages from '../components/PostImages';
 import PostCardContent from '../components/PostCardContent';
+import CommentForm from './CommentForm';
 import { FOLLOW_USER_REQUEST, UNFOLLOW_USER_REQUEST } from '../reducers/user';
 
 moment.locale('ko');
@@ -16,11 +17,9 @@ const CardWrapper = styled.div`
     margin-bottom: 20px;
 `;
 
-const PostCard = ({ post }) => {
+const PostCard = memo(({ post }) => {
     const [commentFormOpened, setCommentFormOpened] = useState(false);
-    const [commentText, setCommentText] = useState('');
     const { me } = useSelector((state) => state.user);
-    const { commentAdded, isAddingComment } = useSelector((state) => state.post);
     const dispatch = useDispatch();
 
     const liked = me && post.Likers && post.Likers.find((v) => v.id === me.id);
@@ -34,31 +33,6 @@ const PostCard = ({ post }) => {
             });
         }
     }, [commentFormOpened]);
-
-    const onSubmitComment = useCallback((e) => {
-        e.preventDefault();
-        if (!me) {
-            return alert('로그인이 필요합니다.');
-        }
-        if (!commentText || !commentText.trim()) {
-            return alert('댓글을 작성하세요.');
-        }
-        return dispatch({
-            type: ADD_COMMENT_REQUEST,
-            data: {
-                postId: post.id,
-                content: commentText.trim(),
-            },
-        });
-    }, [me && me.id, commentText]);
-
-    useEffect(() => {
-        setCommentText('');
-    }, [commentAdded === true]);
-
-    const onChangeCommentText = useCallback((e) => {
-        setCommentText(e.target.value);
-    }, []);
 
     const onToggleLike = useCallback(() => {
         if (!me) {
@@ -182,12 +156,7 @@ const PostCard = ({ post }) => {
             </Card>
             {commentFormOpened && (
                 <>
-                    <Form onSubmit={onSubmitComment}>
-                        <Form.Item>
-                            <Input.TextArea row={4} value={commentText} onChange={onChangeCommentText} />
-                            <Button type="primary" htmlType="submit" loading={isAddingComment}>삐약</Button>
-                        </Form.Item>
-                    </Form>
+                    <CommentForm post={post} />
                     <List 
                         header={`${post.Comments ? post.Comments.length : 0} 댓글`}
                         itemLayout="horizontal"
@@ -207,7 +176,7 @@ const PostCard = ({ post }) => {
             )}
         </CardWrapper>
     );
-};
+});
 
 PostCard.propTypes = {
     post: PropTypes.shape({
