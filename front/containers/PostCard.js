@@ -117,6 +117,7 @@ const PostCard = memo(({ post }) => {
                         <Card
                             cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}
                         >
+                            <span style={{ float: 'right' }}>{moment(post.createdAt).format('YYYY.MM.DD.')}</span>
                             <Card.Meta 
                                 avatar={(
                                     <Link href={{ pathname: '/user', query: { id: post.Retweet.User.id } }} as={`/user/${post.Retweet.User.id}`}>
@@ -130,23 +131,25 @@ const PostCard = memo(({ post }) => {
                                 )}
                                 description={<PostCardContent postData={post.Retweet.content} />}
                             />
-                            {moment(post.createAt).format('YYYY.MM.DD.')}
                         </Card>
                     )
                     : (
-                        <Card.Meta 
-                            avatar={(
-                                <Link href={{ pathname: '/user', query: { id: post.User.id } }} as={`/user/${post.User.id}`}>
-                                    <a><Avatar>{post.User.nickname[0]}</Avatar></a>
-                                </Link>
-                            )}
-                            title={(
-                                <Link href={{ pathname: '/user', query: { id: post.User.id } }} as={`/user/${post.User.id}`}>
-                                    <a style={{ textDecoration: 'none', color: '#000' }}>{post.User.nickname}</a>
-                                </Link>
-                            )}
-                            description={<PostCardContent postData={post.content} />}
-                        />
+                        <>
+                            <span style={{ float: 'right' }}>{moment(post.createdAt).format('YYYY.MM.DD.')}</span>
+                            <Card.Meta 
+                                avatar={(
+                                    <Link href={{ pathname: '/user', query: { id: post.User.id } }} as={`/user/${post.User.id}`}>
+                                        <a><Avatar>{post.User.nickname[0]}</Avatar></a>
+                                    </Link>
+                                )}
+                                title={(
+                                    <Link href={{ pathname: '/user', query: { id: post.User.id } }} as={`/user/${post.User.id}`}>
+                                        <a style={{ textDecoration: 'none', color: '#000' }}>{post.User.nickname}</a>
+                                    </Link>
+                                )}
+                                description={<PostCardContent postData={post.content} />}
+                            />
+                        </>
                     )}
             </Card>
             {commentFormOpened && (
@@ -178,7 +181,7 @@ PostCard.propTypes = {
         User: PropTypes.object,
         content: PropTypes.string,
         Images: PropTypes.array,
-        createAt: PropTypes.object,
+        createdAt: PropTypes.string,
         Comments: PropTypes.array,
         id: PropTypes.number,
         Likers: PropTypes.array,

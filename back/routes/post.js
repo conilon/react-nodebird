@@ -66,7 +66,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST 
 });
 
 router.post('/images', upload.array('image'), (req, res, next) => {
-    res.json(req.files.map((v) => v.filename));
+    return res.json(req.files.map((v) => v.filename));
 });
 
 router.get('/:id', async (req, res, next) => {

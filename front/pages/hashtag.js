@@ -10,7 +10,7 @@ const Hashtag = ({ tag }) => {
     const countRef = useRef([]);
 
     const onScroll = useCallback(() => {
-        if (window.scrollY && window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
+        if (window.pageYOffset && window.pageYOffset + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
             if (hasMorePost) {
                 const lastId = mainPosts[mainPosts.length - 1] && mainPosts[mainPosts.length - 1].id;
                 if (!countRef.current.includes(lastId)) {

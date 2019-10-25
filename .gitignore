@@ -15,3 +15,9 @@ uploads/
 
 # next-bundle-analyzer
 bundles/
+
+# debug
+debug.log
+
+# pem
+react-nodebird.pem
