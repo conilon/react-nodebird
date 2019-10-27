@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
 import ImagesZoom from './ImagesZoom';
+import { backUrl } from '../config/config';
 
 const PostImages = ({ images }) => {
     const [showImagesZoom, setShowImagesZoom] = useState(false);
@@ -18,7 +19,7 @@ const PostImages = ({ images }) => {
         return (
             <>
                 <div onClick={onZoom}>
-                    <img src={`http://localhost:3065/${images[0].src}`} alt="example" style={{ width: '100%' }} />
+                    <img src={`${backUrl}/${images[0].src}`} alt="example" style={{ width: '100%' }} />
                 </div>
                 {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
             </>
@@ -28,8 +29,8 @@ const PostImages = ({ images }) => {
         return (
             <>
                 <div onClick={onZoom}>
-                    <img src={`http://localhost:3065/${images[0].src}`} alt="example" style={{ width: '50%' }} />
-                    <img src={`http://localhost:3065/${images[1].src}`} alt="example" style={{ width: '50%' }} />
+                    <img src={`${backUrl}/${images[0].src}`} alt="example" style={{ width: '50%' }} />
+                    <img src={`${backUrl}/${images[1].src}`} alt="example" style={{ width: '50%' }} />
                 </div>
                 {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
             </>
@@ -38,7 +39,7 @@ const PostImages = ({ images }) => {
     return (
         <>
             <div>
-                <img src={`http://localhost:3065/${images[0].src}`} alt="example" style={{ width: '50%' }} />
+                <img src={`${backUrl}/${images[0].src}`} alt="example" style={{ width: '50%' }} />
                 <div onClick={onZoom} style={{ display: 'inline-block', width: '50%', textAlign: 'center', verticalAlign: 'middle' }}>
                     <Icon type="plus" />
                     <br />
