@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 const path = require('path');
 
 const dev = process.env.NODE_ENV !== 'production';
-// const prod = process.env.NODE_ENV === 'production';
+const prod = process.env.NODE_ENV === 'production';
 
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -36,7 +36,7 @@ app.prepare().then(() => {
     server.get('/user/:id', (req, res) => app.render(req, res, '/user', { id: req.params.id }));
     server.get('*', (req, res) => handle(req, res));
 
-    server.listen(3060, () => {
-        console.log('next + express running on port 3060');
+    server.listen(prod ? process.env.PORT : 3060, () => {
+        console.log(`next + express running on port ${process.env.PORT}`);
     });
 });
