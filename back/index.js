@@ -33,7 +33,7 @@ app.use(expressSession({
     secret: process.env.COOKIE_SECRET,
     cookie: {
         httpOnly: true,
-        secure: false, // https를 쓸 때 true로 한다.
+        secure: false, // https를 쓸 때 true로 한다. 
     },
     name: 'rnbck'
 }));
