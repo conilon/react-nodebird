@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Card, Avatar } from 'antd';
 import { LOAD_USER_REQUEST } from '../reducers/user';
@@ -8,10 +8,6 @@ import PostCard from '../containers/PostCard';
 const User = () => {
     const { mainPosts } = useSelector((state) => state.post);
     const { userInfo } = useSelector((state) => state.user);
-
-    useEffect(() => {
-        
-    }, []);
 
     return (
         <div>
