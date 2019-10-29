@@ -24,7 +24,7 @@ exports.handler = async (event, context, callback) => {
             .toFormat(requiredFormat)
             .toBuffer();
         console.log('resize', resizedImage.length);
-        await s3.putObject({
+        await S3.putObject({
             Body: resizedImage,
             Bucket,
             Key: `thumb/${filename}`,
