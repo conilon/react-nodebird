@@ -31,9 +31,9 @@ const Post = ({ id }) => {
                 }, {
                     property: 'og:description', content: singlePost.content,
                 }, {
-                    property: 'og:image', content: singlePost.Images[0] ? singlePost.Images[0].src : 'http://thmsy.com/favicon.ico',
+                    property: 'og:image', content: singlePost.Images[0] ? singlePost.Images[0].src : 'https://thmsy.com/favicon.ico',
                 }, {
-                    property: 'og:url', content: `http:///thmsy.com/post/${id}`,
+                    property: 'og:url', content: `https:///thmsy.com/post/${id}`,
                 }]}
             />
             <div itemScope="content">{singlePost.content}</div>
