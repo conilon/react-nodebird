@@ -5,7 +5,7 @@ const S3 = new AWS.S3({ region: 'ap-northeast-2' });
 
 exports.handler = async (event, context, callback) => {
     const Bucket = event.Records[0].s3.bucket.name;
-    const Key = event.Records[0].s3.object.key;
+    const Key = decodeURIComponent(event.Records[0].s3.object.key);
     const filename = Key.split('/')[Key.split('/').length - 1];
     const ext = Key.split('.')[Key.split('.').length - 1];
     console.log(Bucket, Key, filename, ext);
@@ -23,6 +23,7 @@ exports.handler = async (event, context, callback) => {
             })
             .toFormat(requiredFormat)
             .toBuffer();
+        console.log('resizedImage', resizedImage);    
         console.log('resize', resizedImage.length);
         await S3.putObject({
             Body: resizedImage,
