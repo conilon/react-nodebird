@@ -7,6 +7,8 @@ const dotenv = require('dotenv');
 const passport = require('passport');
 const hpp = require('hpp');
 const helmet = require('helmet');
+const https = require('https');
+const http = require('http');
 
 const passportConfig = require('./passport');
 const db = require('./models');
@@ -66,6 +68,29 @@ app.use('/api/post', postAPIRouter);
 app.use('/api/posts', postsAPIRouter);
 app.use('/api/hashtag', hashtagAPIRouter);
 
-app.listen(process.env.NODE_ENV === 'production' ? process.env.PORT : 3065, () => {
-    console.log(`server is running on port ${process.env.PORT}`);
-});
+if (prod) {
+    const lex = require('greenlock-express').create({
+        version: 'draft-11',
+        configDir: '/etc/letsencrypt', // 또는 ~/letsencrypt/etc
+        server: 'https://acme-v02.api.letsencrypt.org/directory',
+        email: 'thmsy135@gmail.com',
+        store: require('greenlock-store-fs'),
+        approveDomains: (opts, certs, cb) => {
+            if (certs) {
+                opts.domains = ['api.thmsy.com'];
+            } else {
+                opts.email = 'thmsy135@gmail.com';
+                opts.agreeTos = true;
+            }
+            cb(null, { options: opts, certs });
+        },
+        renewWithin: 81 * 24 * 60 * 60 * 1000,
+        renewBy: 80 * 24 * 60 * 60 * 1000,
+    });
+    https.createServer(lex.httpsOptions, lex.middleware(app)).listen(443);
+    http.createServer(lex.middleware(require('redirect-https')())).listen(80);
+} else {
+    app.listen(process.env.NODE_ENV === 'production' ? process.env.PORT : 3065, () => {
+        console.log(`server is running on port ${process.env.PORT}`);
+    });
+}
