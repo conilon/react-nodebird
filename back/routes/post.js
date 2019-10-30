@@ -42,11 +42,11 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST 
         if (req.body.image) { // 이미지 주소를 여러개 올리면 image: [주소1, 주소2]
             if (Array.isArray(req.body.image)) {
                 const images = await Promise.all(req.body.image.map((image) => {
-                    return db.Image.create({ src: image });
+                    return db.Image.create({ src: decodeURIComponent(image) });
                 }));
                 await newPost.addImage(images);
             } else { // 이미지를 하나만 올리면 image: 주소1
-                const image = await db.Image.create({ src: req.body.image });
+                const image = await db.Image.create({ src: decodeURIComponent(req.body.image) });
                 await newPost.addImage(image);
             }
         }
