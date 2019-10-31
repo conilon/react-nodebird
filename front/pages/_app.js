@@ -25,11 +25,11 @@ const THMSY = ({ Component, store, pageProps }) => (
             }, {
                 'http-equiv': 'X-UA-Compatible', content: 'IE=edge',
             }, {
-                name: 'description', content: 'th의 THMSY SNS',
+                name: 'description', content: 'THMSY',
             }, {
                 property: 'og:title', content: 'THMSY',
             }, {
-                property: 'og:description', content: 'th의 THMSY SNS',
+                property: 'og:description', content: 'THMSY',
             }, {
                 property: 'og:type', content: 'website',
             }, {

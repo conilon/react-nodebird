@@ -1,8 +1,16 @@
 import React from 'react';
+import AppLayout from '../components/AppLayout';
 
-const Portfolio = () => (
-    <div>포트 폴리오</div>
-);
+const Portfolio = () => {
+    const text = '포트폴리오 페이지';
+    return (
+        <AppLayout>
+            <div>
+                {text}
+            </div>
+        </AppLayout>
+    );
+};
 
 Portfolio.getInitialProps = async () => {
     

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 const MyError = ({ statusCode }) => (
     <div>
-        <h1>{statusCode} 에러 발생</h1>
         <Error statusCode={statusCode} />
     </div>
 );
