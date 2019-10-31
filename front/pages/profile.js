@@ -6,6 +6,7 @@ import { LOAD_FOLLOWINGS_REQUEST, LOAD_FOLLOWERS_REQUEST, UNFOLLOW_USER_REQUEST,
 import { LOAD_USER_POSTS_REQUEST } from '../reducers/post';
 import PostCard from '../containers/PostCard';
 import FollowList from '../components/FollowList';
+import AppLayout from '../components/AppLayout';
 
 const Profile = () => {
     const { me, followingList, followerList, hasMoreFollowing, hasMoreFollower } = useSelector((state) => state.user);
@@ -52,7 +53,7 @@ const Profile = () => {
     }
 
     return (
-        <div>
+        <AppLayout>
             <NicknameEditForm />
             <FollowList 
                 header="팔로잉 목록" 
@@ -73,7 +74,7 @@ const Profile = () => {
                     <PostCard key={c.id} post={c} />
                 ))}
             </div>
-        </div>
+        </AppLayout>
     );
 };
 

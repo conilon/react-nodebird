@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import Router from 'next/router';
 import { LOAD_POST_REQUEST } from '../reducers/post';
+import AppLayout from '../components/AppLayout';
 
 const Post = ({ id }) => {
     const { singlePost } = useSelector((state) => state.post);
@@ -20,7 +21,7 @@ const Post = ({ id }) => {
     }
 
     return (
-        <>
+        <AppLayout>
             <Helmet
                 title={`${singlePost.User.nickname}님의 글`}
                 description={singlePost.content}
@@ -39,7 +40,7 @@ const Post = ({ id }) => {
             <div itemScope="content">{singlePost.content}</div>
             <div itemScope="author">{singlePost.User.nickname}</div>
             <div>{singlePost.Images[0] && <img src={singlePost.Images[0].src} alt="example" />}</div>
-        </>
+        </AppLayout>
     );
 };
 

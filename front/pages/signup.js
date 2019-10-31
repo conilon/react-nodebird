@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Form, Input, Checkbox, Button } from 'antd';
 import Router from 'next/router';
 import { SIGN_UP_REQUEST } from '../reducers/user';
+import AppLayout from '../components/AppLayout';
 
 const SignupError = styled.div`
     color: red;
@@ -87,7 +88,7 @@ const Signup = () => {
     }
 
     return (
-        <>
+        <AppLayout>
             <Form onSubmit={onSubmit} style={{ padding: 10 }}>
                 <div>
                     <label htmlFor="user-id">아이디</label>
@@ -118,7 +119,7 @@ const Signup = () => {
                     <Button type="primary" htmlType="submit" loading={isSigningUp}>가입하기</Button>
                 </div>
             </Form>
-        </>
+        </AppLayout>
     );
 };
 

@@ -8,15 +8,14 @@ import createSagaMiddleware from 'redux-saga';
 import axios from 'axios';
 import Helmet from 'react-helmet';
 
-import AppLayout from '../components/AppLayout';
 import reducer from '../reducers';
 import rootSaga from '../sagas';
 import { LOAD_USER_REQUEST } from '../reducers/user';
 
-const Nodebird = ({ Component, store, pageProps }) => (
+const THMSY = ({ Component, store, pageProps }) => (
     <Provider store={store}>
         <Helmet
-            title="NodeBird"
+            title="THMSY"
             htmlAttributes={{ lang: 'ko' }}
             meta={[{
                 charset: 'UTF-8',
@@ -26,11 +25,11 @@ const Nodebird = ({ Component, store, pageProps }) => (
             }, {
                 'http-equiv': 'X-UA-Compatible', content: 'IE=edge',
             }, {
-                name: 'description', content: 'th의 NodeBird SNS',
+                name: 'description', content: 'th의 THMSY SNS',
             }, {
-                property: 'og:title', content: 'NodeBird',
+                property: 'og:title', content: 'THMSY',
             }, {
-                property: 'og:description', content: 'th의 NodeBird SNS',
+                property: 'og:description', content: 'th의 THMSY SNS',
             }, {
                 property: 'og:type', content: 'website',
             }, {
@@ -46,19 +45,17 @@ const Nodebird = ({ Component, store, pageProps }) => (
                 rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css',
             }]}
         />
-        <AppLayout>
-            <Component {...pageProps} />
-        </AppLayout>
+        <Component {...pageProps} />
     </Provider>
 );
 
-Nodebird.propTypes = {
+THMSY.propTypes = {
     Component: PropTypes.elementType.isRequired,
     store: PropTypes.object.isRequired,
     pageProps: PropTypes.object.isRequired,
 };
 
-Nodebird.getInitialProps = async (context) => {
+THMSY.getInitialProps = async (context) => {
     const { ctx, Component } = context;
     let pageProps = {};
     const state = ctx.store.getState();
@@ -102,4 +99,4 @@ const configureStore = (initialState, options) => {
     return store;
 };
 
-export default withRedux(configureStore)(withReduxSaga(Nodebird));
+export default withRedux(configureStore)(withReduxSaga(THMSY));

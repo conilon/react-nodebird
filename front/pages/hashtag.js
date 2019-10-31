@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { LOAD_HASHTAG_POSTS_REQUEST } from '../reducers/post';
 import PostCard from '../containers/PostCard';
+import AppLayout from '../components/AppLayout';
 
 const Hashtag = ({ tag }) => {
     const { mainPosts, hasMorePost } = useSelector((state) => state.post);
@@ -33,11 +34,11 @@ const Hashtag = ({ tag }) => {
     }, [mainPosts.length]);
 
     return (
-        <div>
+        <AppLayout>
             {mainPosts.map((c) => (
                 <PostCard key={c.id} post={c} />
             ))}
-        </div>
+        </AppLayout>
     );
 };
 

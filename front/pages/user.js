@@ -4,13 +4,14 @@ import { Card, Avatar } from 'antd';
 import { LOAD_USER_REQUEST } from '../reducers/user';
 import { LOAD_USER_POSTS_REQUEST } from '../reducers/post';
 import PostCard from '../containers/PostCard';
+import AppLayout from '../components/AppLayout';
 
 const User = () => {
     const { mainPosts } = useSelector((state) => state.post);
     const { userInfo } = useSelector((state) => state.user);
 
     return (
-        <div>
+        <AppLayout>
             {userInfo 
                 ? (
                     <Card
@@ -30,7 +31,7 @@ const User = () => {
             {mainPosts.map((c) => (
                 <PostCard key={c.id} post={c} />
             ))}
-        </div>
+        </AppLayout>
     );
 };
 
