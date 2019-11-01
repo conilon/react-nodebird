@@ -9,6 +9,7 @@ module.exports = {
     "database": process.env.DATABASE,
     "host": process.env.HOST,
     "dialect": "mysql",
+    "timezone": '+09:00',
     "operatorsAliases": false
   },
   "test": {
@@ -17,6 +18,7 @@ module.exports = {
     "database": process.env.DATABASE,
     "host": process.env.HOST,
     "dialect": "mysql",
+    "timezone": '+09:00',
     "operatorsAliases": false
   },
   "production": {
@@ -25,6 +27,7 @@ module.exports = {
     "database": process.env.DATABASE,
     "host": process.env.HOST,
     "dialect": "mysql",
+    "timezone": '+09:00',
     "operatorsAliases": false
   }
 }
