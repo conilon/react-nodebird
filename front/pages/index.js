@@ -1,5 +1,7 @@
 import React, { useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import Router from 'next/router';
+import { Menu, Input } from 'antd';
 import PostForm from '../containers/PostForm';
 import PostCard from '../containers/PostCard';
 import { LOAD_MAIN_POSTS_REQUEST } from '../reducers/post';
@@ -10,6 +12,10 @@ const Home = () => {
     const { mainPosts, hasMorePost } = useSelector((state) => state.post);
     const dispatch = useDispatch();
     const countRef = useRef([]);
+
+    const onSearch = useCallback((value) => {
+        Router.push({ pathname: '/hashtag', query: { tag: value } }, `/hashtag/${value}`);
+    }, []);
 
     const onScroll = useCallback(() => {
         if (window.pageYOffset && window.pageYOffset + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
@@ -32,9 +38,14 @@ const Home = () => {
             window.removeEventListener('scroll', onScroll);
         };
     }, [mainPosts.length]);
-
+    
     return (
         <AppLayout>
+            <Menu mode="horizontal">
+                <Menu.Item key="search">
+                    <Input.Search onSearch={onSearch} />
+                </Menu.Item>
+            </Menu>
             {me && <PostForm />}
             {mainPosts.map((c) => (
                 <PostCard key={c.id} post={c} />

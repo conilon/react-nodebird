@@ -38,6 +38,7 @@ router.get('/', async (req, res, next) => { // GET /posts
             order: [['createdAt', 'DESC']], // DESC 내림차순, ASC는 오름차순
             limit: parseInt(req.query.limit, 10),
         });
+        console.log(posts);
         return res.json(posts);
     } catch (e) {
         console.error(e);

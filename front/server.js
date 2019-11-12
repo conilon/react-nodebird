@@ -32,7 +32,26 @@ app.prepare().then(() => {
             secure: prod,
         },
     }));
-    
+
+    server.get('/portfolio(/:id([0-9]*))?/', (req, res) => {
+        if (req.params.id) {
+            return app.render(req, res, '/portfolio', { id: req.params.id });
+        }
+        return res.redirect('/portfolio/1');
+    });
+    server.get('/portfolio/management(/:id([0-9]*))?/', (req, res) => {
+        if (req.params.id) {
+            return app.render(req, res, '/portfolio/management', { id: req.params.id });
+        }
+        return res.redirect('/portfolio/management/1');
+    });
+    server.get('/portfolio/management/modification(/:id([0-9]*))?/', (req, res) => {
+        if (req.params.id) {
+            return app.render(req, res, '/portfolio/management/modification', { id: req.params.id });
+        }
+        return res.redirect('/portfolio/management/1');
+    });
+    server.get('/portfolio/detail/:id', (req, res) => app.render(req, res, '/portfolio/detail', { id: req.params.id }));
     server.get('/post/:id', (req, res) => app.render(req, res, '/post', { id: req.params.id }));
     server.get('/hashtag/:tag', (req, res) => app.render(req, res, '/hashtag', { tag: req.params.tag }));
     server.get('/user/:id', (req, res) => app.render(req, res, '/user', { id: req.params.id }));
@@ -60,8 +79,8 @@ app.prepare().then(() => {
         https.createServer(lex.httpsOptions, lex.middleware(server)).listen(443);
         http.createServer(lex.middleware(require('redirect-https')())).listen(80);
     } else {
-        server.listen(prod ? process.env.PORT : 3060, () => {
-            console.log(`next + express running on port ${process.env.PORT}`);
+        server.listen(3060, () => {
+            console.log('next + express running on port 3060');
         });
     }
 });

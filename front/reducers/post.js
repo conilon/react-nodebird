@@ -10,6 +10,7 @@ const initialState = {
     addCommentErrorReason: '',
     commentAdded: false,
     singlePost: null,
+    sss: [[]],
 };
 
 export const LOAD_MAIN_POSTS_REQUEST = 'LOAD_MAIN_POSTS_REQUEST';
@@ -162,7 +163,16 @@ const reducer = (state = initialState, action) => (
             case LOAD_MAIN_POSTS_SUCCESS:
             case LOAD_HASHTAG_POSTS_SUCCESS:
             case LOAD_USER_POSTS_SUCCESS: {
-                action.data.forEach((d) => {
+                let flag = 0;
+                action.data.forEach((d, i) => {
+                    if (i && i % 4 === 0) {
+                        flag += 1;
+                    }
+                    if (draft.sss[flag] === undefined) {
+                        draft.sss[flag] = [d];
+                    } else {
+                        draft.sss[flag].push(d);
+                    }
                     draft.mainPosts.push(d);
                 });
                 draft.hasMorePost = action.data.length === 10;

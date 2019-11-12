@@ -47,7 +47,7 @@ const PostForm = () => {
             type: UPLOAD_IMAGES_REQUEST,
             data: imageFormData,
         });
-      }, []);
+    }, []);
 
     const onClickImageUpload = useCallback(() => {
         imageInput.current.click();

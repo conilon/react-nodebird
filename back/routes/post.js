@@ -15,7 +15,7 @@ AWS.config.update({
     secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
 });
 
-const upload = multer({
+const upload3 = multer({
     storage: multerS3({
         s3: new AWS.S3(),
         bucket: process.env.S3_BUCKET,
@@ -26,7 +26,21 @@ const upload = multer({
     limits: { fileSize: 20 * 1024 * 1024 },
 });
 
-router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST /api/post
+const upload = multer({
+    storage: multer.diskStorage({
+        destination(req, file, done) {
+            done(null, 'uploads');
+        },
+        filename(req, file, done) {
+            const ext = path.extname(file.originalname);
+            const basename = path.basename(file.originalname, ext); // th.png, ext === .png, basename === th
+            done(null, basename + new Date().valueOf() + ext);
+        }
+    }),
+    limits: { fileSize: 20 * 1024 * 1024 },
+});
+
+router.post('/', isLoggedIn, upload3.none(), async (req, res, next) => { // POST /api/post
     try {
         const hashtags = req.body.content.match(/#[^\s]+/g);
         const newPost = await db.Post.create({
@@ -71,7 +85,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST 
     }
 });
 
-router.post('/images', upload.array('image'), (req, res, next) => {
+router.post('/images', upload3.array('image'), (req, res, next) => {
     return res.json(req.files.map((v) => v.location));
 });
 

@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import Document, { Main, NextScript } from 'next/document';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
 
 class MyDocument extends Document {
-    static getInitialProps(context) {
+    static getInitialProps(ctx) {
         const sheet = new ServerStyleSheet();
-        const page = context.renderPage((App) => (props) => sheet.collectStyles(<App {...props} />));
+        const page = ctx.renderPage((App) => (props) => sheet.collectStyles(<App {...props} />));
         const styleTags = sheet.getStyleElement();
         return { ...page, helmet: Helmet.renderStatic(), styleTags };
     }
@@ -18,18 +18,18 @@ class MyDocument extends Document {
         const bodyAttrs = bodyAttributes.toComponent();
 
         return (
-            <html {...htmlAttrs} lang="ko">
-                <head>
+            <Html {...htmlAttrs} lang="ko">
+                <Head>
                     {this.props.styleTags}
                     {Object.values(helmet).map((el) => el.toComponent())}
-                </head>
+                </Head>
                 <body {...bodyAttrs}>
                     <Main />
                     {process.env.NODE_ENV === 'production'
                     && <script src="https://polyfill.io/v3/polyfill.min.js?features=es6,es7,es8,es9,NodeList.prototype.forEach&flags=gated" />}
                     <NextScript />
                 </body>
-            </html>
+            </Html>
         );
     }
 }

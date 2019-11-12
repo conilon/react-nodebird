@@ -16,6 +16,8 @@ const userAPIRouter = require('./routes/user');
 const postAPIRouter = require('./routes/post');
 const postsAPIRouter = require('./routes/posts');
 const hashtagAPIRouter = require('./routes/hashtag');
+const portfolioAPIRouter = require('./routes/portfolio');
+const portfoliosAPIRouter = require('./routes/portfolios');
 
 const prod = process.env.NODE_ENV === 'production';
 
@@ -67,6 +69,8 @@ app.use('/api/user', userAPIRouter);
 app.use('/api/post', postAPIRouter);
 app.use('/api/posts', postsAPIRouter);
 app.use('/api/hashtag', hashtagAPIRouter);
+app.use('/api/portfolio', portfolioAPIRouter);
+app.use('/api/portfolios', portfoliosAPIRouter);
 
 if (prod) {
     const lex = require('greenlock-express').create({
@@ -90,7 +94,7 @@ if (prod) {
     https.createServer(lex.httpsOptions, lex.middleware(app)).listen(443);
     http.createServer(lex.middleware(require('redirect-https')())).listen(80);
 } else {
-    app.listen(process.env.NODE_ENV === 'production' ? process.env.PORT : 3065, () => {
-        console.log(`server is running on port ${process.env.PORT}`);
+    app.listen(3065, () => {
+        console.log('server is running on port http://localhost:3065');
     });
 }

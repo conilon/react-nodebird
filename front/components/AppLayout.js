@@ -31,9 +31,9 @@ const AppLayout = ({ children }) => {
                     <Menu mode="horizontal">
                         <Menu.Item key="1"><Link href="/"><a>THMSY</a></Link></Menu.Item>
                         <Menu.Item key="2"><Link href="/portfolio"><a>포트폴리오</a></Link></Menu.Item>
-                        <Menu.Item key="2"><Link href="/profile"><a>프로필</a></Link></Menu.Item>
-                        <Menu.Item key="3" onClick={showModal}>{me ? '로그아웃' : '로그인'}</Menu.Item>
-                        <Menu.Item key="4">
+                        <Menu.Item key="3"><Link href="/profile"><a>프로필</a></Link></Menu.Item>
+                        <Menu.Item key="4" onClick={showModal}>{me ? '로그아웃' : '로그인'}</Menu.Item>
+                        <Menu.Item key="5">
                             <Input.Search onSearch={onSearch} style={{ verticalAlign: 'middle' }} />
                         </Menu.Item>
                     </Menu>
