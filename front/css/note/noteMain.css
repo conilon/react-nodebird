@@ -1,0 +1,29 @@
+.content .list .ant-table-wrapper {
+    background-color: #202020;
+}
+
+.content .list .ant-table-thead tr th {
+    font-size: 1rem;
+    border: none;
+    background-color: #eeeeee;
+}
+
+.content .list .ant-table-thead .ant-table-column-title a {
+    color: #181818;
+}
+
+.content .list .ant-table-content .ant-table-tbody {
+    font-size: .8rem;
+    color: #aaaaaa;
+}
+
+.content .list .ant-table-tbody .ant-table-row-cell-ellipsis:hover {
+    background: unset !important;
+}
+
+.content .list .ant-table-tbody .ant-table-row-cell-ellipsis a {
+    color: #aaaaaa;
+}
+
+
+

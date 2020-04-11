@@ -33,24 +33,59 @@ app.prepare().then(() => {
         },
     }));
 
-    server.get('/portfolio(/:id([0-9]*))?/', (req, res) => {
-        if (req.params.id) {
-            return app.render(req, res, '/portfolio', { id: req.params.id });
+    server.get('/', (req, res) => res.redirect('/note'));
+
+    server.get('/portfolio/main(/:page([0-9]*))', (req, res) => {
+        if (req.params.page) {
+            return app.render(req, res, '/portfolio/main', { page: req.params.page });
         }
-        return res.redirect('/portfolio/1');
+        return res.redirect('/portfolio/main/1');
     });
-    server.get('/portfolio/management(/:id([0-9]*))?/', (req, res) => {
-        if (req.params.id) {
-            return app.render(req, res, '/portfolio/management', { id: req.params.id });
+    server.get('/admin/portfolio(/:page([0-9]*))', (req, res) => {
+        if (req.params.page) {
+            return app.render(req, res, '/admin/portfolio', { page: req.params.page });
         }
-        return res.redirect('/portfolio/management/1');
+        return res.redirect('/admin/portfolio/1');
     });
-    server.get('/portfolio/management/modification(/:id([0-9]*))?/', (req, res) => {
+    server.get('/admin/portfolio/modify(/:id([0-9]*))', (req, res) => {
         if (req.params.id) {
-            return app.render(req, res, '/portfolio/management/modification', { id: req.params.id });
+            return app.render(req, res, '/admin/portfolio/modify', { id: req.params.id });
         }
-        return res.redirect('/portfolio/management/1');
+        return res.redirect('/admin/portfolio/1');
     });
+
+    server.get('/admin/note/category(/:page([0-9]*))', (req, res) => {
+        if (req.params.page) {
+            return app.render(req, res, '/admin/note/category', { page: req.params.page });
+        }
+        return res.redirect('/admin/note/category/1');
+    });
+    server.get('/admin/note/category/modify(/:id([0-9]*))', (req, res) => {
+        if (req.params.id) {
+            return app.render(req, res, '/admin/note/category/modify', { id: req.params.id });
+        }
+        return res.redirect('/admin/note/category/1');
+    });
+
+    // server.get('/note/:category', (req, res) => {
+    //     console.log('category: ', req.params.category);
+    // });
+
+    server.get('/note/category/:category/:page([0-9]*)', (req, res) => {
+        app.render(req, res, '/note/category', { category: req.params.category, page: req.params.page });
+    });
+
+    server.get('/note/category/:category/view/:id([0-9]*)', (req, res) => {
+        app.render(req, res, '/note/category/view', { category: req.params.category, id: req.params.id });
+    });
+
+    // server.get('/note/:category/():id([0-9]*))', (req, res) => {
+    //     console.log('category: ', req.params.category);
+    //     console.log('id: ', req.params.id);
+    // });
+
+    // server.get('/note/:category(/:id([0-9]*))', (req, res) => app.render(req, res, '/note/:category', { category: req.params.category, id: req.params.id }));
+
     server.get('/portfolio/detail/:id', (req, res) => app.render(req, res, '/portfolio/detail', { id: req.params.id }));
     server.get('/post/:id', (req, res) => app.render(req, res, '/post', { id: req.params.id }));
     server.get('/hashtag/:tag', (req, res) => app.render(req, res, '/hashtag', { tag: req.params.tag }));

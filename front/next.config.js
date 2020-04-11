@@ -3,9 +3,12 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 const webpack = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
-const withCSS = require('@zeit/next-css');
 
-module.exports = withBundleAnalyzer(withCSS({
+const withSass = require('@zeit/next-sass');
+const withCSS = require('@zeit/next-css');
+const withImages = require('next-images');
+
+module.exports = withBundleAnalyzer(withCSS(withSass(withImages({
     distDir: '.next',
     webpack(config) {
         const prod = process.env.NODE_ENV === 'production';
@@ -36,7 +39,13 @@ module.exports = withBundleAnalyzer(withCSS({
                 ],
             },
             */
+            // module: {
+            //     ...config.module,
+            //     rules: [
+            //         ...config.module.rules,
+            //     ],
+            // },
             plugins,
         };
     },
-}));
+}))));

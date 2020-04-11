@@ -20,4 +20,5 @@ bundles/
 debug.log
 
 # pem
+nodebird.pem
 react-nodebird.pem

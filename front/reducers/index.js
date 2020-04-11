@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux';
 import user from './user';
-import post from './post';
-import portfolio from './portfolio';
+
+// note
+import note from './note';
+import category from './category';
 
 const rootReducer = combineReducers({
     user,
-    post,
-    portfolio,
+    note,
+    category,
 });
 
 export default rootReducer;

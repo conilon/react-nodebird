@@ -40,7 +40,8 @@ const upload = multer({
     limits: { fileSize: 20 * 1024 * 1024 },
 });
 
-router.post('/', isLoggedIn, upload3.none(), async (req, res, next) => { // POST /api/post
+// router.post('/', isLoggedIn, upload3.none(), async (req, res, next) => { // POST /api/post
+router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST /api/post
     try {
         const hashtags = req.body.content.match(/#[^\s]+/g);
         const newPost = await db.Post.create({
@@ -85,7 +86,8 @@ router.post('/', isLoggedIn, upload3.none(), async (req, res, next) => { // POST
     }
 });
 
-router.post('/images', upload3.array('image'), (req, res, next) => {
+// router.post('/images', upload3.array('image'), (req, res, next) => {
+router.post('/images', upload.array('image'), (req, res, next) => {
     return res.json(req.files.map((v) => v.location));
 });
 
