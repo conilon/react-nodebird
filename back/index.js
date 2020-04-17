@@ -25,6 +25,12 @@ const portfoliosAPIRouter = require('./routes/portfolios');
 const noteAPIRouter = require('./routes/note');
 const categoryAPIRouter = require('./routes/category');
 
+// admin
+const adminAPIRouter = require('./routes/admin');
+
+// tag
+const tagAPIRouter = require('./routes/tag');
+
 const prod = process.env.NODE_ENV === 'production';
 
 dotenv.config();
@@ -84,6 +90,12 @@ app.use('/api/portfolios', portfoliosAPIRouter);
 // note
 app.use('/api/note', noteAPIRouter);
 app.use('/api/category', categoryAPIRouter);
+
+// admin
+app.use('/api/admin', adminAPIRouter);
+
+// tag
+app.use('/api/tag', tagAPIRouter);
 
 if (prod) {
     const lex = require('greenlock-express').create({

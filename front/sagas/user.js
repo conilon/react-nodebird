@@ -103,7 +103,7 @@ function* loadUser(action) {
             me: !action.data,
         });
     } catch (e) {
-        console.error(e);
+        // console.error(e);
         yield put({
             type: LOAD_USER_FAILURE,
             erorr: e,

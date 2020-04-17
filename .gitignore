@@ -22,3 +22,6 @@ debug.log
 # pem
 nodebird.pem
 react-nodebird.pem
+
+# etc
+front2/

@@ -3,57 +3,57 @@ import { useSelector } from 'react-redux';
 import Router from 'next/router';
 import PropTypes from 'prop-types';
 
-import NoteLogo from '../components/note/NoteLogo';
-import NoteMenu from '../components/note/NoteMenu';
+import NoteLogo from '../component/NoteLogo';
+import NoteMenu from '../component/NoteMenu';
 
-import { useWindowWidth, uesWindowScroll } from '../hooks';
+import { useWindowWidth, uesWindowScroll } from '../../common/hooks';
 
-import '../css/note/noteLayout.css';
+import '../../../css/note/noteLayout.css';
 
 const NoteLayout = ({ title, children }) => {
-
-    const { data } = useSelector((state) => state.category.list);
+    const { data: categories } = useSelector((state) => state.category.categories);
+    const { data: tags } = useSelector((state) => state.category.tags);
     const [currentScroll, setCurrentScroll] = useState(0);
     
     const windowWidth = useWindowWidth();
     const windowScroll = uesWindowScroll();
     
-    const cachedScroll = [];
-    useEffect(() => {
-        console.log('NoteLayout useEffect');
-        console.log('NoteLayout useEffect cachedScroll', cachedScroll);
+    // const cachedScroll = [];
+    // useEffect(() => {
+    //     console.log('NoteLayout useEffect');
+    //     console.log('NoteLayout useEffect cachedScroll', cachedScroll);
 
-        const handleRouteChangeStart = () => {
-            console.log('NoteLayout routeChangeStart');
-            cachedScroll.push([window.scrollX, window.scrollY]);
-            console.log('routeChangeStart cachedScroll: ', cachedScroll);
-        };
+    //     const handleRouteChangeStart = () => {
+    //         console.log('NoteLayout routeChangeStart');
+    //         cachedScroll.push([window.scrollX, window.scrollY]);
+    //         console.log('routeChangeStart cachedScroll: ', cachedScroll);
+    //     };
         
-        const handleRouteChangeComplete = () => {
-            console.log('NoteLayout routeChangeComplete');
-            console.log('routeChangeComplete cachedScroll: ', cachedScroll);
-        };
+    //     const handleRouteChangeComplete = () => {
+    //         console.log('NoteLayout routeChangeComplete');
+    //         console.log('routeChangeComplete cachedScroll: ', cachedScroll);
+    //     };
 
-        Router.beforePopState(() => {
-            console.log('NoteLayout beforePopState');
-            console.log('beforePopState cachedScroll: ', cachedScroll);
-            const [x, y] = cachedScroll.pop();
+    //     Router.beforePopState(() => {
+    //         console.log('NoteLayout beforePopState');
+    //         console.log('beforePopState cachedScroll: ', cachedScroll);
+    //         const [x, y] = cachedScroll.pop();
 
-            console.log('y: ', y);
+    //         console.log('y: ', y);
 
-            setTimeout(() => {
-                window.scrollTo(x, y);
-            }, 2000);
-            return true;
-        });
+    //         setTimeout(() => {
+    //             window.scrollTo(x, y);
+    //         }, 2000);
+    //         return true;
+    //     });
 
-        Router.events.on('routeChangeStart', handleRouteChangeStart);
-        Router.events.on('routeChangeComplete', handleRouteChangeComplete);
-        return () => {
-            Router.events.off('routeChangeStart', handleRouteChangeStart);
-            Router.events.off('routeChangeComplete', handleRouteChangeComplete);
-        };
-    }, []);
+    //     Router.events.on('routeChangeStart', handleRouteChangeStart);
+    //     Router.events.on('routeChangeComplete', handleRouteChangeComplete);
+    //     return () => {
+    //         Router.events.off('routeChangeStart', handleRouteChangeStart);
+    //         Router.events.off('routeChangeComplete', handleRouteChangeComplete);
+    //     };
+    // }, []);
 
     useEffect(() => {
         const bars = document.querySelector('#bars');
@@ -81,7 +81,7 @@ const NoteLayout = ({ title, children }) => {
                     <span />
                 </label>
             </div>
-            <NoteMenu data={data} />
+            <NoteMenu categories={categories} tags={tags} />
             <div className="header">
                 <div className="header-title">
                     {title}

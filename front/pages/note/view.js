@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import MyError from '../../_error';
-import NoteLayout from '../../../containers/NoteLayout';
-import NoteContent from '../../../components/note/NoteContent';
+import MyError from '../_error';
+import NoteLayout from '../../src/note/container/NoteLayout';
+import NoteContent from '../../src/note/component/NoteContent';
 
-import { NOTE_VIEW_REQUEST } from '../../../reducers/note';
+import { NOTE_VIEW_REQUEST } from '../../reducers/note';
 
-import '../../../css/note/noteContent.css';
+import '../../css/note/noteContent.css';
 
 const NoteView = () => {
     const { data } = useSelector((state) => state.note.view);

@@ -3,15 +3,13 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Row, Col, Card, Pagination } from 'antd';
 
-import '../../css/note/noteList.css';
-
-const NoteList = ({ data, count, page, onChangePage }) => (
-    <div className="list">
+const NoteList = ({ rows, count, page, onChangePage }) => (
+    <div>
         <Row gutter={[15, 15]}>
-            {data && data.map((v) => (
+            {rows && rows.map((v) => (
                 <Col key={v.id} span={6} xs={24} sm={12} md={12} lg={8} xl={6} xxl={6}>
                     <Link 
-                        key={v.id}
+                        key={v.id} 
                         href={{ pathname: '/note/category/view', query: { category: v.Category.name, id: v.id } }} 
                         as={`/note/category/${v.Category.name}/view/${v.id}`}
                     >
@@ -25,18 +23,16 @@ const NoteList = ({ data, count, page, onChangePage }) => (
             ))}
         </Row>
         <Row>
-            {data && (
-                <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24} style={{ padding: '24px', textAlign: 'center' }}>
-                    <Pagination onChange={onChangePage} defaultCurrent={parseInt(page, 10)} pageSize={24} total={parseInt(count, 10)} />
-                </Col>
-            )}
+            <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24} style={{ width: '100%%', margin: '24px auto 24px', padding: '24px', textAlign: 'center' }}>
+                <Pagination onChange={onChangePage} defaultCurrent={page} pageSize={12} total={count} />
+            </Col>
         </Row>
     </div>
 );
 
 NoteList.propTypes = {
-    data: PropTypes.array.isRequired,
-    page: PropTypes.string.isRequired,
+    rows: PropTypes.array.isRequired,
+    page: PropTypes.number.isRequired,
     count: PropTypes.number.isRequired,
     onChangePage: PropTypes.func.isRequired,
 };

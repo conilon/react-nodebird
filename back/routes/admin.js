@@ -1,6 +1,11 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
+var Sequelize = require('sequelize'), 
+    sequelize = new Sequelize(process.env.DATABASE, process.env.USER_NAME, process.env.DB_PASSWORD, {
+        dialect: "mysql", // or 'sqlite', 'postgres', 'mariadb'
+        port: 3306, // or 5432 (for postgres)
+});
 
 const db = require('../models');
 const { isLoggedIn } = require('./middleware');
@@ -21,31 +26,63 @@ const upload = multer({
     limits: { fileSize: 20 * 1024 * 1024 },
 });
 
-router.get('/note/:category/:page', isLoggedIn, async (req, res, next) => {
+// router.get('/note/:category/:page', isLoggedIn, async (req, res, next) => {
+router.get('/note/:page', async (req, res, next) => {
     try {
-        const limit = 12;
+        const limit = 10;
         let offset = 0;
         if (parseInt(req.params.page, 10) > 1) {
             offset = limit * (parseInt(req.params.page, 10) - 1);
         }
-        const note = await db.Note.findOne({
+        const note = await db.Note.findAndCountAll({
             where: { 
-                category: req.params.category,
                 visible: 1,
             },
-            order: [['id', 'ASC']],
-            attributes: ['uid', 'title', 'content'],
+            order: [['id', 'DESC']],
+            attributes: ['id', 'title', 'createdAt'],
             limit,
             offset,
             include: [{
                 model: db.User,
                 attributes: ['id', 'nickname'],
             }],
+            include: [{
+                model: db.Category,
+                attributes: ['id', 'name'],
+            }],
+        });
+        // if (!note) {
+        //     return res.status(404).send('note is empty.');
+        // }
+        return res.json(note);
+    } catch (e) {
+        console.error(e);
+        return next(e);
+    }
+});
+
+router.get('/note/view/:row', async (req, res, next) => {
+    try {
+        const note = await db.Note.findOne({
+            where: { 
+                id: req.params.row,
+                visible: 1,
+            },
+            order: [['id', 'DESC']],
+            attributes: ['id', 'title', 'content', 'tag', 'visible', 'createdAt'],
+            include: [{
+                model: db.User,
+                attributes: ['id', 'nickname'],
+            }],
+            include: [{
+                model: db.Category,
+                attributes: ['id', 'name'],
+            }],
         });
         if (!note) {
             return res.status(404).send('note is empty.');
         }
-        return res.json(portfolio);
+        return res.json(note);
     } catch (e) {
         console.error(e);
         return next(e);

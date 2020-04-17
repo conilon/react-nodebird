@@ -3,13 +3,13 @@ import { useSelector } from 'react-redux';
 import Link from 'next/link';
 import { Row, Col, Table } from 'antd';
 
-import NoteLayout from '../../containers/NoteLayout';
+import NoteLayout from '../../src/note/container/NoteLayout';
 
 import { NOTE_ALL_LIST_REQUEST } from '../../reducers/note';
 
 import '../../css/note/noteMain.css';
 
-const NoteMain = () => {
+const Note = () => {
     const { data } = useSelector((state) => state.note.list);
 
     const tableName = Array.from(Array(data.length), () => []);
@@ -19,7 +19,7 @@ const NoteMain = () => {
             <Link 
                 key={n.id} 
                 href={{ pathname: '/note/category/', query: { category: n.name, page: 1 } }} 
-                as={`/note/category/${n.name}/1`}
+                as={`/note/${n.name}/1`}
             >
                 <a>{n.name}({n.count})</a>
             </Link>, 
@@ -32,8 +32,8 @@ const NoteMain = () => {
             title: 
                 <Link 
                     key={d.id} 
-                    href={{ pathname: '/note/category/view', query: { category: n.name, id: d.id } }} 
-                    as={`/note/category/${n.name}/view/${d.id}`}
+                    href={{ pathname: '/note/view', query: { category: n.name, id: d.id } }} 
+                    as={`/note/${n.name}/view/${d.id}`}
                 >
                     <a>{d.title}</a>
                 </Link>,
@@ -59,10 +59,10 @@ const NoteMain = () => {
     );
 };
 
-NoteMain.getInitialProps = async (context) => {
+Note.getInitialProps = async (context) => {
     context.store.dispatch({
         type: NOTE_ALL_LIST_REQUEST,
     });
 };
 
-export default NoteMain;
+export default Note;

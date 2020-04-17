@@ -6,7 +6,11 @@ const initialState = {
     },
     
     categories: {
-        note: [],
+        data: [],
+    },
+
+    tags: {
+        data: [],
     },
 
     // data
@@ -67,15 +71,18 @@ const reducer = (state = initialState, action) => (
     produce(state, (draft) => {
         switch (action.type) {
             case CATEGORY_LIST_REQUEST: {
-                draft.list.data = [];
+                draft.categories.data = [];
+                draft.tags.data = [];
                 break;
             }
             case CATEGORY_LIST_SUCCESS: {
-                draft.list.data = action.data;
+                draft.categories.data = action.data.category;
+                draft.tags.data = action.data.tag;
                 break;
             }
             case CATEGORY_LIST_FAILURE: {
-                draft.list.data = [];
+                draft.categories.data = [];
+                draft.tags.data = [];
                 break;
             }
 

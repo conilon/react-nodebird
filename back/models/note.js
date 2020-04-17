@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: false,
         },
+        tag: {
+            type: DataTypes.TEXT,
+            allowNull: true,
+        },
         visible: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
@@ -20,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     Note.associate = (db) => {
         db.Note.belongsTo(db.Category);
         db.Note.belongsTo(db.User);
+        db.Note.belongsToMany(db.Hashtag, { through: 'NoteHashtag' });
     };
 
     return Note;
