@@ -155,19 +155,19 @@
     transform: translateY(50%) rotate(-225deg);
 }
 
-#bars ~ .menu .categories {
+#bars ~ .menu .category {
     padding: .2rem;
     transition: all .35s;
 }
 
-#bars ~ .menu .categories .title {
+#bars ~ .menu .category .title {
     padding: 5px;
     font-size: 1.3rem;
     font-weight: bold;
     color: #e1e1e1;
 }
 
-#bars ~ .menu .categories .content > a {
+#bars ~ .menu .category .content > a {
     display: inline-block;
     font-size: .95rem;
     font-weight: bold;
@@ -176,19 +176,19 @@
     margin: .2rem;
 }
 
-#bars ~ .menu .tags {
+#bars ~ .menu .tag {
     padding: .2rem;
     transition: all .35s;
 }
 
-#bars ~ .menu .tags .title {
+#bars ~ .menu .tag .title {
     padding: 5px;
     font-size: 1.3rem;
     font-weight: bold;
     color: #e1e1e1;
 }
 
-#bars ~ .menu .tags .content > a {
+#bars ~ .menu .tag .content > a {
     display: inline-block;
     font-size: .95rem;
     font-weight: bold;

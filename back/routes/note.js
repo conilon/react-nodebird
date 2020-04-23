@@ -29,7 +29,7 @@ const upload = multer({
 });
 
 router.post('/upload', upload.single('file'), (req, res, next) => {
-  const url = prod ? `http://api.thmsy.com/note/` : `http://localhost:3065/note/`
+  const url = prod ? `https://api.thmsy.com/note/` : `http://localhost:3065/note/`
   const info = {
     originalname: decodeURIComponent(req.file.originalname),
     filename: decodeURIComponent(req.file.originalname),
@@ -123,7 +123,7 @@ router.get('/category/:category/:page', async (req, res, next) => {
       offset = limit * (parseInt(req.params.page, 10) - 1);
     }
     const categoryId = await db.Category.findOne({
-      where: { name: req.params.category, visible: 1 },
+      where: { name: decodeURIComponent(req.params.category), visible: 1 },
       attributes: ['id'],
     });
 
@@ -143,6 +143,7 @@ router.get('/category/:category/:page', async (req, res, next) => {
       JOIN users ON users.id = notes.UserId
       JOIN categories ON categories.id = notes.CategoryId
       WHERE notes.visible = 1 and notes.categoryId = '${categoryId.id}'
+      ORDER BY notes.id DESC
       LIMIT ${limit}
       OFFSET ${offset}`, {
         nest: true,
@@ -150,12 +151,14 @@ router.get('/category/:category/:page', async (req, res, next) => {
     );
     
     const tag = await sequelize.query(
-      `SELECT notes.id AS noteID, hashtags.id AS hashtagID, hashtags.name AS hashtagName
+      `SELECT notes.id AS noteID, hashtags.id AS hashtagID, hashtags.name AS hashtagName, COUNT(hashtags.id) as count
       FROM notes
       JOIN notehashtag ON notehashtag.NoteId = notes.id
       JOIN hashtags ON hashtags.id = notehashtag.HashtagId
       JOIN categories ON categories.id = notes.CategoryId
-      WHERE notes.visible = 1 and notes.categoryId = '${categoryId.id}'`, {
+      WHERE notes.visible = 1 and notes.categoryId = '${categoryId.id}'
+      GROUP BY hashtags.id
+      ORDER BY hashtags.id DESC`, {
         nest: true,
       },
     );
@@ -173,8 +176,8 @@ router.get('/category/:category/:page', async (req, res, next) => {
           user: {
             id: v.userId,
           },
-          tag: tag.filter((x) => parseInt(v.id) === parseInt(x.noteID)).map((z) => {
-            return { id: z.hashtagID, name: z.hashtagName };
+          tag: tag.filter((x) => v.id === x.noteID).map((z) => {
+            return { id: z.hashtagID, name: z.hashtagName, count: z.count };
           }),
       });
     });
@@ -202,33 +205,39 @@ router.get('/category/:category/:page', async (req, res, next) => {
   }
 });
 
-router.get('/category/:category/view/:id', async (req, res, next) => {
-    try {
-        const categoryId = await db.Category.findOne({
-            where: { name: req.params.category, visible: 1 },
-            attributes: ['id'],
-        });
-        const note = await db.Note.findOne({
-            where: { id: req.params.id, visible: 1, CategoryId: categoryId.id },
-            attributes: ['id', 'title', 'content',
-                [sequelize.literal('DATE_ADD(Note.createdAt, INTERVAL 9 HOUR)'), 'createdAt'],
-            ],
-            include: [{
-                model: db.Category,
-                attributes: ['id', 'name'],
-            },{
-                model: db.User,
-                attributes: ['id', 'nickname'],
-            }],
-        });
-        if (!note) {
-            return res.status(404).send('note is empty.');
-        }
-        return res.json(note);
-    } catch (e) {
-        console.error(e);
-        return next(e);
+router.get('/view/:id', async (req, res, next) => {
+  try {
+    // const categoryId = await db.Category.findOne({
+    //   where: { name: decodeURIComponent(req.params.category), visible: 1 },
+    //   attributes: ['id'],
+    // });
+
+    console.log('req.params.id: ', req.params.id);
+
+    const note = await db.Note.findOne({
+      // where: { id: req.params.id, visible: 1, CategoryId: categoryId.id },
+      where: { id: req.params.id, visible: 1 },
+      attributes: ['id', 'title', 'content',
+        [sequelize.literal('DATE_ADD(Note.createdAt, INTERVAL 9 HOUR)'), 'createdAt'],
+      ],
+      include: [{
+        where: { visible: 1 },
+        model: db.Category,
+        attributes: ['id', 'name'],
+      },{
+        model: db.User,
+        attributes: ['id', 'nickname'],
+      }],
+    });
+
+    if (!note) {
+      return res.status(404).send('note is empty.');
     }
+    return res.json(note);
+  } catch (e) {
+    console.error(e);
+    return next(e);
+  }
 });
 
 router.get('/all', async (req, res, next) => {
@@ -285,13 +294,20 @@ router.get('/all', async (req, res, next) => {
             },
         );
 
+        // category.map((v) => {
+        //     v.Notes = [];
+        //     note.map((z) => {
+        //         if (v.id === z.CategoryId) {
+        //             v.Notes.push(z);
+        //         }
+        //     });
+        // });
+        
         category.map((v) => {
-            v.Notes = [];
-            note.map((z) => {
-                if (v.id === z.CategoryId) {
-                    v.Notes.push(z);
-                }
-            });
+          v.Notes = [];
+          note.filter((x) => v.id === x.CategoryId).map((z) => {
+            return v.Notes.push(z);
+          });
         });
 
         return res.json(category);

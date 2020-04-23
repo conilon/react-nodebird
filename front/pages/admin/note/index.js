@@ -5,12 +5,12 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { Row, Col, Button, Pagination, Table } from 'antd';
 
-// import NoteLayout from '../../../src/note/container/NoteLayout';
-// import NoteList from '../../../src/admin/note/component/NoteList';
-import { NOTE_ADMIN_LIST_REQUEST } from '../../../reducers/note';
+import NoteLayout from '../../../src/note/container/NoteLayout';
+import NoteList from '../../../src/admin/note/component/NoteList';
+import { ADMIN_NOTE_LIST_REQUEST } from '../../../reducers/note';
 
-const AdminNote = ({ page }) => {
-  const { data, count } = useSelector((state) => state.note.list);
+const Main = ({ page }) => {
+  const { data, count } = useSelector((state) => state.note);
 
   const columns = [
     {
@@ -42,8 +42,8 @@ const AdminNote = ({ page }) => {
   }, [page]);
 
   const onClickNote = useCallback((e) => {
-    const row = e.currentTarget.dataset.rowKey;
-    Router.push({ pathname: '/admin/note/edit', query: { row } }, `/admin/note/edit/${row}`);
+    const id = e.currentTarget.dataset.rowKey;
+    Router.push({ pathname: '/admin/note/edit', query: { id } }, `/admin/note/edit/${id}`);
   }, []);
 
   useLayoutEffect(() => {
@@ -56,29 +56,34 @@ const AdminNote = ({ page }) => {
 
   return (
     <div>
-      <Table dataSource={dataSource} columns={columns} pagination={false} onClick={onClickNote} />
-      <Row>
-        {data && (
-          <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24} style={{ padding: '24px', textAlign: 'center' }}>
-            <Pagination onChange={onChangePage} defaultCurrent={parseInt(page, 10)} pageSize={10} total={parseInt(count, 10)} />
-          </Col>
-        )}
-      </Row>
+      <NoteLayout title="test">
+        {/* <NoteList data={data} count={count} page={page} onChangePage={onChangePage} /> */}
+        <Row>
+          <Table dataSource={dataSource} columns={columns} pagination={false} onClick={onClickNote} />
+        </Row>
+        <Row>
+          {data && (
+            <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24} style={{ padding: '24px', textAlign: 'center' }}>
+              <Pagination onChange={onChangePage} defaultCurrent={parseInt(page, 10)} pageSize={10} total={parseInt(count, 10)} />
+            </Col>
+          )}
+        </Row>
+      </NoteLayout>
     </div>
   );
 };
 
-AdminNote.getInitialProps = async (context) => {
+Main.getInitialProps = async (context) => {
   const { page } = context.query;
   context.store.dispatch({
-    type: NOTE_ADMIN_LIST_REQUEST,
+    type: ADMIN_NOTE_LIST_REQUEST,
     page,
   });
   return { page };
 };
 
-AdminNote.propTypes = {
+Main.propTypes = {
   page: PropTypes.number.isRequired,
 };
 
-export default AdminNote;
+export default Main;

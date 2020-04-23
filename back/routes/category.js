@@ -39,16 +39,7 @@ router.get('/', async (req, res, next) => {
       }],
       group: ['name'],
     });
-    const tag = await sequelize.query(
-      `SELECT hashtags.id, hashtags.name, COUNT(hashtags.name) as count
-      FROM notes 
-      JOIN notehashtag ON notehashtag.NoteId = notes.id
-      JOIN hashtags ON hashtags.id = notehashtag.HashtagId
-      GROUP BY hashtags.name`, {
-        nest: true,
-      },
-    );
-    return res.json({ category, tag });
+    return res.json(category);
   } catch (e) {
     console.error(e);
     return next(e);

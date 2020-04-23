@@ -9,42 +9,41 @@ import NoteList from '../../src/note/component/NoteList';
 
 import { NOTE_LIST_REQUEST } from '../../reducers/note';
 
-const Note = ({ category, page }) => {
-  const { data, count } = useSelector((state) => state.note.list);
+const Category = ({ category, page }) => {
+  const { data, count } = useSelector((state) => state.note);
 
   const onChangePage = useCallback((p) => {
-    Router.push({ pathname: '/note/category', query: { category, page: p } }, `/note/${category}/${p}`);
+    Router.push({ pathname: '/note/category', query: { category, page: p } }, `/note/category/${category}/${p}`);
   }, [category, page]);
   
   const layout = (
     <NoteLayout title={category}>
-      { data && <NoteList data={data} count={count} page={page} onChangePage={onChangePage} /> }
+      <NoteList data={data} count={count} page={page} onChangePage={onChangePage} />
     </NoteLayout>
   );
 
-  const content = data ? layout : <MyError statusCode={404} />;
+  const result = data ? layout : <MyError statusCode={404} />;
 
   return (
-    <div>
-      {data && content}
-    </div>
+    <>
+      {result}
+    </>
   );
 };
 
-Note.getInitialProps = async (context) => {
-  console.log('Note.getInitialProps');
-  const { category, page } = context.query;
+Category.getInitialProps = async (context) => {
+  const { category, page = 1 } = context.query;
   context.store.dispatch({
     type: NOTE_LIST_REQUEST,
     category,
     page,
   });
-  return { category, page };
+  return { category, page: parseInt(page, 10) };
 };
 
-Note.propTypes = {
+Category.propTypes = {
   category: PropTypes.string.isRequired,
-  page: PropTypes.string.isRequired,
+  page: PropTypes.number.isRequired,
 };
 
-export default Note;
+export default Category;

@@ -1,37 +1,11 @@
 import produce from 'immer';
 
-const initialState = {
-    // use to write page
-    add: {
-        added: false,
-        message: null,
-    },
-    // use to list page
-    list: {
-        data: [],
-        loading: false,
-        loaded: false,
-        message: null,
-    },
-    // use to view page
-    view: {
-        data: null,
-        loading: false,
-        loaded: false,
-        message: null,
-    },
-    // use to edit page
-    edit: {
-        edited: false,
-        message: null,
-    },
-    // use to tag page
-    tag: {
-        data: [],
-        loading: false,
-        loaded: false,
-        message: null,
-    },
+const INITIAL_STATE = {
+    data: [],
+    count: 0,
+    ing: false,
+    ed: false,
+    message: null,
 };
 
 export const NOTE_ADD_REQUEST = 'NOTE_ADD_REQUEST';
@@ -58,174 +32,187 @@ export const NOTE_ALL_LIST_REQUEST = 'NOTE_ALL_LIST_REQUEST';
 export const NOTE_ALL_LIST_SUCCESS = 'NOTE_ALL_LIST_SUCCESS';
 export const NOTE_ALL_LIST_FAILURE = 'NOTE_ALL_LIST_FAILURE';
 
-export const NOTE_ADMIN_LIST_REQUEST = 'NOTE_ADMIN_LIST_REQUEST';
-export const NOTE_ADMIN_LIST_SUCCESS = 'NOTE_ADMIN_LIST_SUCCESS';
-export const NOTE_ADMIN_LIST_FAILURE = 'NOTE_ADMIN_LIST_FAILURE';
+export const ADMIN_NOTE_LIST_REQUEST = 'ADMIN_NOTE_LIST_REQUEST';
+export const ADMIN_NOTE_LIST_SUCCESS = 'ADMIN_NOTE_LIST_SUCCESS';
+export const ADMIN_NOTE_LIST_FAILURE = 'ADMIN_NOTE_LIST_FAILURE';
 
 export const NOTE_ADMIN_VIEW_REQUEST = 'NOTE_ADMIN_VIEW_REQUEST';
 export const NOTE_ADMIN_VIEW_SUCCESS = 'NOTE_ADMIN_VIEW_SUCCESS';
 export const NOTE_ADMIN_VIEW_FAILURE = 'NOTE_ADMIN_VIEW_FAILURE';
 
-const reducer = (state = initialState, action) => (
+const reducer = (state = INITIAL_STATE, action) => (
     produce(state, (draft) => {
         switch (action.type) {
             case NOTE_ADMIN_VIEW_REQUEST: {
-                draft.view.data = [];
-                draft.view.loading = true;
-                draft.view.loaded = false;
-                draft.view.message = null;
+                draft.data = [];
+                draft.count = 0;
+                draft.ing = true;
+                draft.ed = false;
+                draft.message = null;
                 break;
             }
             case NOTE_ADMIN_VIEW_SUCCESS: {
-                draft.view.data = action.data;
-                draft.view.loading = false;
-                draft.view.loaded = true;
-                draft.view.message = null;
+                draft.data = action.data;
+                draft.ing = false;
+                draft.ed = true;
+                draft.message = null;
                 break;
             }
             case NOTE_ADMIN_VIEW_FAILURE: {
-                draft.view.data = [];
-                draft.view.loading = false;
-                draft.view.loaded = false;
-                draft.view.message = action.error;
+                draft.data = [];
+                draft.count = 0;
+                draft.ing = false;
+                draft.ed = false;
+                draft.message = action.error;
                 break;
             }
-            case NOTE_ADMIN_LIST_REQUEST: {
-                draft.list.data = [];
-                draft.list.loading = true;
-                draft.list.loaded = false;
-                draft.list.message = null;
+            case ADMIN_NOTE_LIST_REQUEST: {
+                draft.data = [];
+                draft.count = 0;
+                draft.ing = true;
+                draft.ed = false;
+                draft.message = null;
                 break;
             }
-            case NOTE_ADMIN_LIST_SUCCESS: {
-                draft.list.data = action.data.rows;
-                draft.list.count = action.data.count;
-                draft.list.loading = false;
-                draft.list.loaded = true;
-                draft.list.message = null;
+            case ADMIN_NOTE_LIST_SUCCESS: {
+                draft.data = action.data.rows;
+                draft.count = action.data.count;
+                draft.ing = false;
+                draft.ed = true;
+                draft.message = null;
                 break;
             }
-            case NOTE_ADMIN_LIST_FAILURE: {
-                draft.list.data = [];
-                draft.list.loading = false;
-                draft.list.loaded = false;
-                draft.list.message = action.error;
+            case ADMIN_NOTE_LIST_FAILURE: {
+                draft.data = [];
+                draft.ing = false;
+                draft.ed = false;
+                draft.message = action.error;
                 break;
             }
             case NOTE_EDIT_REQUEST: {
-                draft.edit.edited = false;
-                draft.edit.message = null;
+                draft.data = [];
+                draft.count = 0;
+                draft.ing = true;
+                draft.ed = false;
+                draft.message = null;
                 break;
             }
             case NOTE_EDIT_SUCCESS: {
-                draft.edit.edited = true;
-                draft.edit.message = null;
+                draft.ed = true;
+                draft.message = null;
                 break;
             }
             case NOTE_EDIT_FAILURE: {
-                draft.edit.edited = false;
-                draft.edit.message = action.error;
+                draft.ed = false;
+                draft.message = action.error;
                 break;
             }
             case NOTE_ADD_REQUEST: {
-                draft.add.added = false;
-                draft.add.message = null;
+                draft.data = [];
+                draft.count = 0;
+                draft.ing = true;
+                draft.ed = false;
+                draft.message = null;
                 break;
             }
             case NOTE_ADD_SUCCESS: {
-                draft.add.added = true;
-                draft.add.message = null;
+                draft.ed = true;
+                draft.message = null;
                 break;
             }
             case NOTE_ADD_FAILURE: {
-                draft.add.added = false;
-                draft.add.message = action.error;
+                draft.ed = false;
+                draft.message = action.error;
                 break;
             }
             case NOTE_LIST_REQUEST: {
-                draft.list.data = [];
-                draft.list.loading = true;
-                draft.list.loaded = false;
-                draft.list.message = null;
+                draft.data = [];
+                draft.count = 0;
+                draft.ing = true;
+                draft.ed = false;
+                draft.message = null;
                 break;
             }
             case NOTE_LIST_SUCCESS: {
-                draft.list.data = action.data.rows;
-                draft.list.count = action.data.count;
-                draft.list.loading = false;
-                draft.list.loaded = true;
-                draft.list.message = null;
+                draft.data = action.data.rows;
+                draft.count = action.data.count;
+                draft.ing = true;
+                draft.ed = true;
+                draft.message = null;
                 break;
             }
             case NOTE_LIST_FAILURE: {
-                draft.list.data = [];
-                draft.list.loading = false;
-                draft.list.loaded = false;
-                draft.list.message = action.error;
+                draft.data = [];
+                draft.ing = false;
+                draft.ed = false;
+                draft.message = action.error;
                 break;
             }
             case NOTE_TAG_REQUEST: {
-                draft.tag.data = [];
-                draft.tag.loading = true;
-                draft.tag.loaded = false;
-                draft.tag.message = null;
+                draft.data = [];
+                draft.count = 0;
+                draft.ing = true;
+                draft.ed = false;
+                draft.message = null;
                 break;
             }
             case NOTE_TAG_SUCCESS: {
-                draft.tag.data = action.data.rows;
-                draft.tag.count = action.data.count;
-                draft.tag.loading = false;
-                draft.tag.loaded = true;
-                draft.tag.message = null;
+                draft.data = action.data.rows;
+                draft.count = action.data.count;
+                draft.ing = false;
+                draft.ed = true;
+                draft.message = null;
                 break;
             }
             case NOTE_TAG_FAILURE: {
-                draft.tag.data = [];
-                draft.tag.loading = false;
-                draft.tag.loaded = false;
-                draft.tag.message = action.error;
+                draft.data = [];
+                draft.ing = false;
+                draft.ed = false;
+                draft.message = action.error;
                 break;
             }
             case NOTE_VIEW_REQUEST: {
-                draft.view.data = [];
-                draft.view.loading = true;
-                draft.view.loaded = false;
-                draft.view.message = null;
+                draft.data = [];
+                draft.count = 0;
+                draft.ing = true;
+                draft.ed = false;
+                draft.message = null;
                 break;
             }
             case NOTE_VIEW_SUCCESS: {
-                draft.view.data = action.data;
-                draft.view.loading = false;
-                draft.view.loaded = true;
-                draft.view.message = null;
+                draft.data = action.data;
+                draft.ing = false;
+                draft.ed = true;
+                draft.message = null;
                 break;
             }
             case NOTE_VIEW_FAILURE: {
-                draft.view.data = [];
-                draft.view.loading = false;
-                draft.view.loaded = false;
-                draft.view.message = action.error;
+                draft.data = [];
+                draft.ing = false;
+                draft.ed = false;
+                draft.message = action.error;
                 break;
             }
             case NOTE_ALL_LIST_REQUEST: {
-                draft.list.data = [];
-                draft.list.loading = true;
-                draft.list.loaded = false;
-                draft.list.message = null;
+                draft.data = [];
+                draft.count = 0;
+                draft.ing = true;
+                draft.ed = false;
+                draft.message = null;
                 break;
             }
             case NOTE_ALL_LIST_SUCCESS: {
-                draft.list.data = action.data;
-                draft.list.loading = false;
-                draft.list.loaded = true;
-                draft.list.message = null;
+                draft.data = action.data;
+                draft.ing = false;
+                draft.ed = true;
+                draft.message = null;
                 break;
             }
             case NOTE_ALL_LIST_FAILURE: {
-                draft.list.data = [];
-                draft.list.loading = false;
-                draft.list.loaded = false;
-                draft.list.message = action.error;
+                draft.data = [];
+                draft.ing = false;
+                draft.ed = false;
+                draft.message = action.error;
                 break;
             }
             default: {

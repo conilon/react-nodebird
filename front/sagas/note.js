@@ -5,7 +5,7 @@ import {
     NOTE_ADD_REQUEST, NOTE_ADD_SUCCESS, NOTE_ADD_FAILURE,
     NOTE_VIEW_REQUEST, NOTE_VIEW_SUCCESS, NOTE_VIEW_FAILURE,
     NOTE_ALL_LIST_REQUEST, NOTE_ALL_LIST_SUCCESS, NOTE_ALL_LIST_FAILURE,
-    NOTE_ADMIN_LIST_REQUEST, NOTE_ADMIN_LIST_SUCCESS, NOTE_ADMIN_LIST_FAILURE,
+    ADMIN_NOTE_LIST_REQUEST, ADMIN_NOTE_LIST_SUCCESS, ADMIN_NOTE_LIST_FAILURE,
     NOTE_ADMIN_VIEW_REQUEST, NOTE_ADMIN_VIEW_SUCCESS, NOTE_ADMIN_VIEW_FAILURE,
     NOTE_EDIT_REQUEST, NOTE_EDIT_SUCCESS, NOTE_EDIT_FAILURE,
     NOTE_TAG_REQUEST, NOTE_TAG_SUCCESS, NOTE_TAG_FAILURE,
@@ -36,7 +36,6 @@ function* noteAddWatch() {
     yield takeLatest(NOTE_ADD_REQUEST, noteAdd);
 }
 
-
 // note edit
 function noteEditAPI(data) {
     return axios.post('/note/edit', data, { withCredentials: true });
@@ -63,7 +62,7 @@ function* noteEditWatch() {
 }
 
 function noteListAPI(category, page) {
-    return axios.get(`/note/category/${category}/${page}`);
+    return axios.get(`/note/category/${encodeURIComponent(category)}/${page}`);
 }
 
 function* noteList(action) {
@@ -110,13 +109,13 @@ function* noteTagWatch() {
     yield takeLatest(NOTE_TAG_REQUEST, noteTag);
 }
 
-function noteViewAPI(category, id) {
-    return axios.get(`/note/category/${category}/view/${id}`);
+function noteViewAPI(id) {
+    return axios.get(`/note/view/${id}`);
 }
 
 function* noteView(action) {
     try {
-        const result = yield call(noteViewAPI, action.category, action.id);
+        const result = yield call(noteViewAPI, action.id);
         yield put({
             type: NOTE_VIEW_SUCCESS,
             data: result.data,
@@ -158,25 +157,25 @@ function* adminNoteList(action) {
     try {
         const result = yield call(adminNoteListAPI, action.page);
         yield put({
-            type: NOTE_ADMIN_LIST_SUCCESS,
+            type: ADMIN_NOTE_LIST_SUCCESS,
             data: result.data,
         });
     } catch (e) {
         console.error(e);
         yield put({
-            type: NOTE_ADMIN_LIST_FAILURE,
+            type: ADMIN_NOTE_LIST_FAILURE,
             error: e.response && e.response.data,
         });
     }
 }
 
-function adminNoteViewAPI(row) {
-    return axios.get(`/admin/note/view/${row}`);
+function adminNoteViewAPI(id) {
+    return axios.get(`/admin/note/view/${id}`);
 }
 
 function* adminViewList(action) {
     try {
-        const result = yield call(adminNoteViewAPI, action.row);
+        const result = yield call(adminNoteViewAPI, action.id);
         yield put({
             type: NOTE_ADMIN_VIEW_SUCCESS,
             data: result.data,
@@ -190,8 +189,6 @@ function* adminViewList(action) {
     }
 }
 
-
-
 function* noteViewWatch() {
     yield takeLatest(NOTE_VIEW_REQUEST, noteView);
 }
@@ -199,7 +196,7 @@ function* noteAllListWatch() {
     yield takeLatest(NOTE_ALL_LIST_REQUEST, noteAllList);
 }
 function* adminNoteListWatch() {
-    yield takeLatest(NOTE_ADMIN_LIST_REQUEST, adminNoteList);
+    yield takeLatest(ADMIN_NOTE_LIST_REQUEST, adminNoteList);
 }
 function* adminNoteViewWatch() {
     yield takeLatest(NOTE_ADMIN_VIEW_REQUEST, adminViewList);

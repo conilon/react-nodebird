@@ -14,14 +14,15 @@ import rootSaga from '../sagas';
 
 import { LOAD_USER_REQUEST } from '../reducers/user';
 import { CATEGORY_LIST_REQUEST } from '../reducers/category';
+import { TAG_LIST_REQUEST } from '../reducers/tag';
 
 import 'antd/dist/antd.css';
 
 const THMSY = ({ Component, store, pageProps }) => {
     console.log('THMSY');
     
-    useEffect(() => {
-        console.log('THMSY useEffect');
+    // useEffect(() => {
+        // console.log('THMSY useEffect');
 
         // const cachedPageHeight = [];
         // const html = document.querySelector('html');
@@ -64,7 +65,7 @@ const THMSY = ({ Component, store, pageProps }) => {
 
         //     return true;
         // });
-    }, []);
+    // }, []);
 
     return (
         <Provider store={store}>
@@ -91,10 +92,6 @@ const THMSY = ({ Component, store, pageProps }) => {
                 }]}
                 link={[{
                     rel: 'shortcut icon', href: '/favicon.ico',
-                }, {
-                    rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css',
-                }, {
-                    rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css',
                 }]}
             />
             <Component {...pageProps} />
@@ -121,8 +118,9 @@ THMSY.getInitialProps = async (context) => {
         axios.defaults.headers.Cookie = cookie;
     }
 
-    if (!state.user.me) ctx.store.dispatch({ type: LOAD_USER_REQUEST });
-    ctx.store.dispatch({ type: CATEGORY_LIST_REQUEST });
+    // if (!state.user.me) ctx.store.dispatch({ type: LOAD_USER_REQUEST });
+    if (!state.category.data.length) ctx.store.dispatch({ type: CATEGORY_LIST_REQUEST });
+    if (!state.tag.data.length) ctx.store.dispatch({ type: TAG_LIST_REQUEST });
 
     if (Component.getInitialProps) {
         pageProps = await Component.getInitialProps(ctx) || {};

@@ -3,14 +3,21 @@ import { useSelector } from 'react-redux';
 
 import NoteWrite from '../../../src/admin/note/component/NoteWrite';
 
+import { ADMIN_CATEGORY_LIST_REQUEST } from '../../../reducers/category';
+
 const Write = () => {
-    const { data: category } = useSelector((state) => state.category.list);
-    
-    return (
-        <div>
-            {category[0] && <NoteWrite pCategory={category} />}
-        </div>
-    );
+  const { rows: pCategory } = useSelector((state) => state.category.data);
+  return (
+    <div>
+      {pCategory[0] && <NoteWrite pCategory={pCategory} />}
+    </div>
+  );
+};
+
+Write.getInitialProps = async (context) => {
+  context.store.dispatch({
+    type: ADMIN_CATEGORY_LIST_REQUEST,
+  });
 };
 
 export default Write;

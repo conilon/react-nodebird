@@ -37,67 +37,88 @@ app.prepare().then(() => {
 
     server.get('/portfolio/main(/:page([0-9]*))', (req, res) => {
         if (req.params.page) {
-            return app.render(req, res, '/portfolio/main', { page: req.params.page });
+            return app.render(req, res, '/portfolio/main', { page: +req.params.page });
         }
         return res.redirect('/portfolio/main/1');
     });
     server.get('/admin/portfolio(/:page([0-9]*))', (req, res) => {
         if (req.params.page) {
-            return app.render(req, res, '/admin/portfolio', { page: req.params.page });
+            return app.render(req, res, '/admin/portfolio', { page: +req.params.page });
         }
         return res.redirect('/admin/portfolio/1');
     });
     server.get('/admin/portfolio/modify(/:id([0-9]*))', (req, res) => {
         if (req.params.id) {
-            return app.render(req, res, '/admin/portfolio/modify', { id: req.params.id });
+            return app.render(req, res, '/admin/portfolio/modify', { id: +req.params.id });
         }
         return res.redirect('/admin/portfolio/1');
     });
 
     server.get('/admin/note/category(/:page([0-9]*))', (req, res) => {
         if (req.params.page) {
-            return app.render(req, res, '/admin/note/category', { page: req.params.page });
+            return app.render(req, res, '/admin/note/category', { page: +req.params.page });
         }
         return res.redirect('/admin/note/category/1');
     });
     server.get('/admin/note/category/modify(/:id([0-9]*))', (req, res) => {
         if (req.params.id) {
-            return app.render(req, res, '/admin/note/category/modify', { id: req.params.id });
+            return app.render(req, res, '/admin/note/category/modify', { id: +req.params.id });
         }
         return res.redirect('/admin/note/category/1');
     });
 
     // tag
     server.get('/note/tag/:tag?/:page([0-9]+)?', (req, res) => {
-        if (req.params.page) {
-            return app.render(req, res, '/note/tag', { tag: req.params.tag, page: req.params.page });
+        if (req.params.tag && req.params.page) {
+            return app.render(req, res, '/note/tag', { tag: req.params.tag, page: +req.params.page });
         }
-        return res.redirect(`/note/tag/${req.params.tag}/1`);
+        return res.redirect(`/note/tag/${req.params.tag}/${1}`);
+    });
+
+    server.get('/note/category/:category?/:page([0-9]+)?', (req, res) => {
+        if (req.params.category && req.params.page) {
+            return app.render(req, res, '/note/category', { category: req.params.category, page: +req.params.page });
+        }
+        return res.redirect(`/note/category/${req.params.category}/${1}`);
     });
 
     // server.get('/note/:category', (req, res) => {
     //     console.log('category: ', req.params.category);
     // });
 
-    // 관리자
-    server.get('/admin/note(/:page([0-9]+))?', (req, res) => {
+    // admin
+    server.get('/admin/category/page(/:page([0-9]+))?', (req, res) => {
         if (req.params.page) {
-            return app.render(req, res, '/admin/note', { page: req.params.page });
+            return app.render(req, res, '/admin/category', { page: +req.params.page });
         }
-        return res.redirect('/admin/note/1');
+        return res.redirect('/admin/category/page/1');
     });
 
-    server.get('/admin/note/edit/:row', (req, res) => {
-        app.render(req, res, '/admin/note/edit', { row: req.params.row });
+    server.get('/admin/category/edit(/:id([0-9]+))?', (req, res) => {
+        if (req.params.id) {
+            return app.render(req, res, '/admin/category/edit', { id: +req.params.id });
+        }
+        return res.redirect('/admin/category/page/1');
+    });
+    
+    server.get('/admin/note/:page([0-9]+)?', (req, res) => {
+        if (req.params.page) {
+            return app.render(req, res, '/admin/note', { page: +req.params.page });
+        }
+        return res.redirect(`/admin/note/${1}`);
     });
 
-    server.get('/note/:category/:page([0-9]*)', (req, res) => {
-        app.render(req, res, '/note/category', { category: req.params.category, page: req.params.page });
+    server.get('/admin/note/edit/:id([0-9]+)', (req, res) => {
+        app.render(req, res, '/admin/note/edit', { id: +req.params.id });
     });
 
-    server.get('/note/:category/view/:id([0-9]*)', (req, res) => {
-        app.render(req, res, '/note/view', { category: req.params.category, id: req.params.id });
+    server.get('/note/view/:id([0-9]+)', (req, res) => {
+        app.render(req, res, '/note/view', { id: +req.params.id });
     });
+
+    // server.get('/note/:category/view/:id([0-9]*)', (req, res) => {
+    //     app.render(req, res, '/note/view', { category: req.params.category, id: req.params.id });
+    // });
 
     // server.get('/note/:category/():id([0-9]*))', (req, res) => {
     //     console.log('category: ', req.params.category);
@@ -106,10 +127,10 @@ app.prepare().then(() => {
 
     // server.get('/note/:category(/:id([0-9]*))', (req, res) => app.render(req, res, '/note/:category', { category: req.params.category, id: req.params.id }));
 
-    server.get('/portfolio/detail/:id', (req, res) => app.render(req, res, '/portfolio/detail', { id: req.params.id }));
-    server.get('/post/:id', (req, res) => app.render(req, res, '/post', { id: req.params.id }));
-    server.get('/hashtag/:tag', (req, res) => app.render(req, res, '/hashtag', { tag: req.params.tag }));
-    server.get('/user/:id', (req, res) => app.render(req, res, '/user', { id: req.params.id }));
+    server.get('/portfolio/detail/:id', (req, res) => app.render(req, res, '/portfolio/detail', { id: +req.params.id }));
+    server.get('/post/:id', (req, res) => app.render(req, res, '/post', { id: +req.params.id }));
+    server.get('/hashtag/:tag', (req, res) => app.render(req, res, '/hashtag', { tag: +req.params.tag }));
+    server.get('/user/:id', (req, res) => app.render(req, res, '/user', { id: +req.params.id }));
     server.get('*', (req, res) => handle(req, res));
 
     if (prod) {

@@ -1,207 +1,130 @@
 import produce from 'immer';
 
-const initialState = {
-    list: {
-        data: [],
-    },
-    
-    categories: {
-        data: [],
-    },
-
-    tags: {
-        data: [],
-    },
-
-    // data
-    menuNoteCategories: [],
-    noteCategories: [],
-    singleNoteCategory: [],
-    
-    // success
-    addedNoteCategory: false,
-    loadedMenuNoteCategories: false,
-    loadedNoteCategories: false,
-    loadedSingleNoteCategory: false,
-    modifiedNoteCategory: false,
-    toggledNoteCategory: false,
-    
-    // loading
-    loadingMenuNoteCategories: false,
-    loadingNoteCategories: false,
-
-    // failure
-    addNoteCategoryErrorMessage: null,
-    loadMenuNoteCategoriesErrorMessage: null,
-    loadNoteCategoriesErrorMessage: null,
-    loadSingleNoteCategoryErrorMessage: null,
-    modifyNoteCategoryErrorMessage: null,
-    toggleNoteCategoryErrorMessage: null,
+const INITIAL_STATE = {
+  data: [],
+  count: 0,
+  ing: false,
+  ed: false,
+  message: null,
 };
-
-export const LOAD_MENU_NOTE_CATEGORIES_REQUEST = 'LOAD_MENU_NOTE_CATEGORIES_REQUEST';
-export const LOAD_MENU_NOTE_CATEGORIES_SUCCESS = 'LOAD_MENU_NOTE_CATEGORIES_SUCCESS';
-export const LOAD_MENU_NOTE_CATEGORIES_FAILURE = 'LOAD_MENU_NOTE_CATEGORIES_FAILURE';
-
-export const LOAD_NOTE_CATEGORIES_REQUEST = 'LOAD_NOTE_CATEGORIES_REQUEST';
-export const LOAD_NOTE_CATEGORIES_SUCCESS = 'LOAD_NOTE_CATEGORIES_SUCCESS';
-export const LOAD_NOTE_CATEGORIES_FAILURE = 'LOAD_NOTE_CATEGORIES_FAILURE';
-
-export const ADD_NOTE_CATEGORY_REQUEST = 'ADD_NOTE_CATEGORY_REQUEST';
-export const ADD_NOTE_CATEGORY_SUCCESS = 'ADD_NOTE_CATEGORY_SUCCESS';
-export const ADD_NOTE_CATEGORY_FAILURE = 'ADD_NOTE_CATEGORY_FAILURE';
-
-export const TOGGLE_NOTE_CATEGORY_VISIBLE_REQUEST = 'TOGGLE_NOTE_CATEGORY_VISIBLE_REQUEST';
-export const TOGGLE_NOTE_CATEGORY_VISIBLE_SUCCESS = 'TOGGLE_NOTE_CATEGORY_VISIBLE_SUCCESS';
-export const TOGGLE_NOTE_CATEGORY_VISIBLE_FAILURE = 'TOGGLE_NOTE_CATEGORY_VISIBLE_FAILURE';
-
-export const MODIFY_NOTE_CATEGORY_REQUEST = 'MODIFY_NOTE_CATEGORY_REQUEST';
-export const MODIFY_NOTE_CATEGORY_SUCCESS = 'MODIFY_NOTE_CATEGORY_SUCCESS';
-export const MODIFY_NOTE_CATEGORY_FAILURE = 'MODIFY_NOTE_CATEGORY_FAILURE';
-
-export const SINGLE_LOAD_NOTE_CATEGORY_REQUEST = 'SINGLE_LOAD_NOTE_CATEGORY_REQUEST';
-export const SINGLE_LOAD_NOTE_CATEGORY_SUCCESS = 'SINGLE_LOAD_NOTE_CATEGORY_SUCCESS';
-export const SINGLE_LOAD_NOTE_CATEGORY_FAILURE = 'SINGLE_LOAD_NOTE_CATEGORY_FAILURE';
 
 export const CATEGORY_LIST_REQUEST = 'CATEGORY_LIST_REQUEST';
 export const CATEGORY_LIST_SUCCESS = 'CATEGORY_LIST_SUCCESS';
 export const CATEGORY_LIST_FAILURE = 'CATEGORY_LIST_FAILURE';
 
-const reducer = (state = initialState, action) => (
-    produce(state, (draft) => {
-        switch (action.type) {
-            case CATEGORY_LIST_REQUEST: {
-                draft.categories.data = [];
-                draft.tags.data = [];
-                break;
-            }
-            case CATEGORY_LIST_SUCCESS: {
-                draft.categories.data = action.data.category;
-                draft.tags.data = action.data.tag;
-                break;
-            }
-            case CATEGORY_LIST_FAILURE: {
-                draft.categories.data = [];
-                draft.tags.data = [];
-                break;
-            }
+export const ADMIN_CATEGORY_LIST_REQUEST = 'ADMIN_CATEGORY_LIST_REQUEST';
+export const ADMIN_CATEGORY_LIST_SUCCESS = 'ADMIN_CATEGORY_LIST_SUCCESS';
+export const ADMIN_CATEGORY_LIST_FAILURE = 'ADMIN_CATEGORY_LIST_FAILURE';
 
-            case LOAD_MENU_NOTE_CATEGORIES_REQUEST: {
-                draft.categories.note = [];
+export const ADMIN_CATEGORY_PAGE_LIST_REQUEST = 'ADMIN_CATEGORY_PAGE_LIST_REQUEST';
+export const ADMIN_CATEGORY_PAGE_LIST_SUCCESS = 'ADMIN_CATEGORY_PAGE_LIST_SUCCESS';
+export const ADMIN_CATEGORY_PAGE_LIST_FAILURE = 'ADMIN_CATEGORY_PAGE_LIST_FAILURE';
 
-                draft.menuNoteCategories = [];
-                draft.loadedMenuNoteCategories = false;
-                draft.loadingMenuNoteCategories = true;
-                draft.loadMenuNoteCategoriesErrorMessage = null;
+export const ADMIN_CATEGORY_VIEW_REQUEST = 'ADMIN_CATEGORY_VIEW_REQUEST';
+export const ADMIN_CATEGORY_VIEW_SUCCESS = 'ADMIN_CATEGORY_VIEW_SUCCESS';
+export const ADMIN_CATEGORY_VIEW_FAILURE = 'ADMIN_CATEGORY_VIEW_FAILURE';
 
-                draft.modifiedNoteCategory = false;
-                draft.toggledNoteCategory = false;
-                break;
-            }
-            case LOAD_MENU_NOTE_CATEGORIES_SUCCESS: {
-                draft.categories.note = action.data;
+export const ADMIN_CATEGORY_EDIT_REQUEST = 'ADMIN_CATEGORY_EDIT_REQUEST';
+export const ADMIN_CATEGORY_EDIT_SUCCESS = 'ADMIN_CATEGORY_EDIT_SUCCESS';
+export const ADMIN_CATEGORY_EDIT_FAILURE = 'ADMIN_CATEGORY_EDIT_FAILURE';
 
-                draft.menuNoteCategories = action.data;
-                draft.loadedMenuNoteCategories = true;
-                draft.loadingMenuNoteCategories = false;
-                draft.loadMenuNoteCategoriesErrorMessage = null;
-                break;
-            }
-            case LOAD_MENU_NOTE_CATEGORIES_FAILURE: {
-                draft.menuNoteCategories = [];
-                draft.loadedMenuNoteCategories = false;
-                draft.loadingMenuNoteCategories = false;
-                draft.loadMenuNoteCategoriesErrorMessage = action.error;
-                break;
-            }
-            case LOAD_NOTE_CATEGORIES_REQUEST: {
-                draft.noteCategories = [];
-                draft.loadedNoteCategories = true;
-                draft.loadingNoteCategories = true;
-                draft.loadNoteCategoriesErrorMessage = null;
-                break;
-            }
-            case LOAD_NOTE_CATEGORIES_SUCCESS: {
-                draft.noteCategories = action.data;
-                draft.loadedNoteCategories = false;
-                draft.loadingNoteCategories = false;
-                draft.loadNoteCategoriesErrorMessage = null;
-                break;
-            }
-            case LOAD_NOTE_CATEGORIES_FAILURE: {
-                draft.noteCategories = [];
-                draft.loadedNoteCategories = false;
-                draft.loadingNoteCategories = false;
-                draft.loadNoteCategoriesErrorMessage = action.error;
-                break;
-            }
-            case ADD_NOTE_CATEGORY_REQUEST: {
-                draft.addedNoteCategory = false;
-                draft.addNoteCategoryErrorMessage = null;
-                break;
-            }
-            case ADD_NOTE_CATEGORY_SUCCESS: {
-                draft.addedNoteCategory = true;
-                break;
-            }
-            case ADD_NOTE_CATEGORY_FAILURE: {
-                draft.addedNoteCategory = false;
-                draft.addNoteCategoryErrorMessage = action.error;
-                break;
-            }
-            case TOGGLE_NOTE_CATEGORY_VISIBLE_REQUEST: {
-                draft.toggledNoteCategory = false;
-                draft.toggleNoteCategoryErrorMessage = null;
-                break;
-            }
-            case TOGGLE_NOTE_CATEGORY_VISIBLE_SUCCESS: {
-                const noteCategoryIndex = draft.noteCategories.rows.findIndex((v) => v.id === action.categoryId);
-                draft.noteCategories.rows[noteCategoryIndex].visible = action.data;
-                draft.toggledNoteCategory = true;
-                break;
-            }
-            case TOGGLE_NOTE_CATEGORY_VISIBLE_FAILURE: {
-                draft.toggledNoteCategory = false;
-                draft.toggleNoteCategoryErrorMessage = action.error;
-                break;
-            }
-            case MODIFY_NOTE_CATEGORY_REQUEST: {
-                draft.modifiedNoteCategory = false;
-                draft.modifyNoteCategoryErrorMessage = null;
-                break;
-            }
-            case MODIFY_NOTE_CATEGORY_SUCCESS: {
-                draft.modifiedNoteCategory = true;
-                break;
-            }
-            case MODIFY_NOTE_CATEGORY_FAILURE: {
-                draft.modifiedNoteCategory = false;
-                draft.modifyNoteCategoryErrorMessage = action.error;
-                break;
-            }
-            case SINGLE_LOAD_NOTE_CATEGORY_REQUEST: {
-                draft.singleNoteCategory = [];
-                draft.loadedSingleNoteCategory = false;
-                draft.loadSingleNoteCategoryErrorMessage = null;
-                break;
-            }
-            case SINGLE_LOAD_NOTE_CATEGORY_SUCCESS: {
-                draft.singleNoteCategory = action.data;
-                draft.loadedSingleNoteCategory = true;
-                draft.loadSingleNoteCategoryErrorMessage = null;
-                break;
-            }
-            case SINGLE_LOAD_NOTE_CATEGORY_FAILURE: {
-                draft.singleNoteCategory = [];
-                draft.loadedSingleNoteCategory = false;
-                draft.loadSingleNoteCategoryErrorMessage = action.error;
-                break;
-            }
-            default: {
-                break;
-            }
+export const ADMIN_CATEGORY_CREATE_REQUEST = 'ADMIN_CATEGORY_CREATE_REQUEST';
+export const ADMIN_CATEGORY_CREATE_SUCCESS = 'ADMIN_CATEGORY_CREATE_SUCCESS';
+export const ADMIN_CATEGORY_CREATE_FAILURE = 'ADMIN_CATEGORY_CREATE_FAILURE';
+
+const reducer = (state = INITIAL_STATE, action) => (
+  produce(state, (draft) => {
+    switch (action.type) {
+      case CATEGORY_LIST_REQUEST: {
+        draft.data = [];
+        draft.count = 0;
+        draft.ing = true;
+        draft.ed = false;
+        draft.message = null;
+        break;
+      }
+      case CATEGORY_LIST_SUCCESS: {
+        draft.data = action.data;
+        draft.ing = false;
+        draft.ed = true;
+        draft.message = null;
+        break;
+      }
+      case CATEGORY_LIST_FAILURE: {
+        draft.data = [];
+        draft.count = 0;
+        draft.ing = false;
+        draft.ed = false;
+        draft.message = null;
+        break;
+      }
+
+      
+        case ADMIN_CATEGORY_LIST_REQUEST: {
+            draft.data = [];
+            break;
         }
-    })
+        case ADMIN_CATEGORY_LIST_SUCCESS: {
+            draft.data = action.data;
+            break;
+        }
+        case ADMIN_CATEGORY_LIST_FAILURE: {
+            draft.data = [];
+            break;
+        }
+        case ADMIN_CATEGORY_PAGE_LIST_REQUEST: {
+            draft.data = [];
+            break;
+        }
+        case ADMIN_CATEGORY_PAGE_LIST_SUCCESS: {
+            draft.data = action.data;
+            break;
+        }
+        case ADMIN_CATEGORY_PAGE_LIST_FAILURE: {
+            draft.data = [];
+            break;
+        }
+        case ADMIN_CATEGORY_VIEW_REQUEST: {
+            draft.data = [];
+            break;
+        }
+        case ADMIN_CATEGORY_VIEW_SUCCESS: {
+            draft.data = action.data;
+            break;
+        }
+        case ADMIN_CATEGORY_VIEW_FAILURE: {
+            draft.data = [];
+            break;
+        }
+        case ADMIN_CATEGORY_EDIT_REQUEST: {
+            draft.data = [];
+            break;
+        }
+        case ADMIN_CATEGORY_EDIT_SUCCESS: {
+            draft.data = action.data;
+            break;
+        }
+        case ADMIN_CATEGORY_EDIT_FAILURE: {
+            draft.data = [];
+            break;
+        }
+        case ADMIN_CATEGORY_CREATE_REQUEST: {
+            draft.data = [];
+            break;
+        }
+        case ADMIN_CATEGORY_CREATE_SUCCESS: {
+            draft.data.added = action.data;
+            break;
+        }
+        case ADMIN_CATEGORY_CREATE_FAILURE: {
+            draft.data = [];
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+  })
 );
 
 export default reducer;

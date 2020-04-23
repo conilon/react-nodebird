@@ -11,6 +11,25 @@ const db = require('../models');
 
 const router = express.Router();
 
+router.get('/', async (req, res, next) => {
+  try {
+    const tag = await sequelize.query(
+      `SELECT hashtags.id, hashtags.name, COUNT(hashtags.name) as count
+      FROM notes 
+      JOIN notehashtag ON notehashtag.NoteId = notes.id
+      JOIN hashtags ON hashtags.id = notehashtag.HashtagId
+      GROUP BY hashtags.name
+      ORDER BY count DESC, id DESC`, {
+        nest: true,
+      },
+    );
+    return res.json(tag);
+  } catch (e) {
+    console.error(e);
+    return next(e);
+  }
+});
+
 router.get('/:tag/:page', async (req, res, next) => {
   try {
     const limit = 10;
@@ -20,7 +39,7 @@ router.get('/:tag/:page', async (req, res, next) => {
     }
     
     const count = await sequelize.query(
-      `SELECT COUNT(*) as count
+      `SELECT COUNT(notes.id) as count
       FROM notes
       JOIN notehashtag ON notehashtag.NoteId = notes.id
       JOIN hashtags ON hashtags.id = notehashtag.HashtagId
@@ -37,6 +56,7 @@ router.get('/:tag/:page', async (req, res, next) => {
       JOIN users ON users.id = notes.UserId
       JOIN categories ON categories.id = notes.CategoryId
       WHERE notes.visible = 1 and hashtags.name = '${decodeURIComponent(req.params.tag)}'
+      ORDER BY notes.id DESC
       LIMIT ${limit}
       OFFSET ${offset}`, {
         nest: true,
@@ -44,11 +64,12 @@ router.get('/:tag/:page', async (req, res, next) => {
     );
 
     const tag = await sequelize.query(
-      `SELECT notes.id AS noteID, hashtags.id AS hashtagID, hashtags.name AS hashtagName
+      `SELECT notes.id AS noteID, hashtags.id AS hashtagID, hashtags.name AS hashtagName, COUNT(hashtags.id) as count
       FROM notes
       JOIN notehashtag ON notehashtag.NoteId = notes.id
       JOIN hashtags ON hashtags.id = notehashtag.HashtagId
-      WHERE EXISTS (SELECT hashtags.name FROM hashtags WHERE hashtags.name = '${decodeURIComponent(req.params.tag)}')`, {
+      GROUP BY hashtags.id
+      ORDER BY hashtags.id DESC`, {
         nest: true,
       },
     );
@@ -66,8 +87,8 @@ router.get('/:tag/:page', async (req, res, next) => {
         user: {
           id: v.userId,
         },
-        tag: tag.filter((x) => parseInt(v.id) === parseInt(x.noteID)).map((z) => {
-          return { id: z.hashtagID, name: z.hashtagName };
+        tag: tag.filter((x) => v.id === x.noteID).map((z) => {
+          return { id: z.hashtagID, name: z.hashtagName, count: z.count };
         }),
       });
     });

@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import Link from 'next/link';
 
-const NoteLogo = memo(() => (
+const NoteLogo = () => (
     <div className="logo">
         <div className="logo-title">
             <Link href={{ pathname: '/note' }} as="/note">
@@ -9,6 +9,6 @@ const NoteLogo = memo(() => (
             </Link>
         </div>
     </div>
-));
+);
 
-export default NoteLogo;
+export default memo(NoteLogo);

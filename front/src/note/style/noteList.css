@@ -1,0 +1,59 @@
+.note .list {
+  border-top: 1px solid #aaaaaa;
+  padding: 2rem 0;
+}
+
+.note .list .ant-col:last-child .list {
+  border-bottom: 1px solid #aaaaaa !important;
+}
+
+.note .list .title {
+  display: -webkit-box;
+  width: 100%;
+  height: calc(1.5rem * 2);
+  line-height: 3rem;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #aaaaaa;
+  overflow: hidden;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: keep-all;
+  text-overflow: ellipsis;
+  text-align: left;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.note .list .title a {
+  padding: 1rem 0;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #aaaaaa;
+}
+
+.note .list .tag {
+  margin-top: 1rem;
+}
+
+.note .list .tag a {
+  display: inline-block;
+  padding-right: .4rem;
+  margin: .2rem .2rem .2rem 0;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #1890ff;
+}
+
+.note .list .tag a:last-child {
+  padding-right: 0;
+}
+
+.note .list .createdAt {
+  clear: both;
+  padding: 2rem 0 0;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #aaaaaa;
+  text-align: right;
+}
