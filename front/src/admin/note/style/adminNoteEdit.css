@@ -1,0 +1,16 @@
+.content .admin-note-edit {
+    position: relative;
+    left: 50%;
+    width: 90%;
+    max-width: 1690px;
+    padding-bottom: 150px;
+    transform: translateX(-50%);
+}
+
+.admin-note-edit .ant-form-item-label label {
+    color: #aaaaaa;
+}
+
+.admin-note-edit #toastEditor {
+    background-color: #fff;
+}

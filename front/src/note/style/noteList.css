@@ -1,6 +1,7 @@
 .note .list {
   border-top: 1px solid #aaaaaa;
   padding: 2rem 0;
+  margin: 0;
 }
 
 .note .list .ant-col:last-child .list {

@@ -49,7 +49,7 @@ router.get('/:tag/:page', async (req, res, next) => {
     );
     
     const data = await sequelize.query(
-      `SELECT notes.id, notes.title, notes.createdAt, categories.id AS categoryId, categories.name AS categoryName, users.id AS userId
+      `SELECT notes.id, notes.title, notes.createdAt, notes.tag, categories.id AS categoryId, categories.name AS categoryName, users.id AS userId
       FROM notes
       JOIN notehashtag ON notehashtag.NoteId = notes.id
       JOIN hashtags ON hashtags.id = notehashtag.HashtagId
@@ -63,19 +63,24 @@ router.get('/:tag/:page', async (req, res, next) => {
       },
     );
 
-    const tag = await sequelize.query(
-      `SELECT notes.id AS noteID, hashtags.id AS hashtagID, hashtags.name AS hashtagName, COUNT(hashtags.id) as count
-      FROM notes
-      JOIN notehashtag ON notehashtag.NoteId = notes.id
-      JOIN hashtags ON hashtags.id = notehashtag.HashtagId
-      GROUP BY hashtags.id
-      ORDER BY hashtags.id DESC`, {
-        nest: true,
-      },
-    );
+    const tag = await Promise.all(data.map((v) => {
+      try {
+        return sequelize.query(
+        `SELECT notes.id as noteID, hashtags.id AS hashtagID, hashtags.name hashtagName
+        FROM notes 
+        JOIN notehashtag ON notehashtag.NoteId = notes.id
+        JOIN hashtags ON hashtags.id = notehashtag.HashtagId
+        JOIN categories ON notes.categoryID = categories.id 
+        WHERE notes.id = ${v.id}`, {
+          nest: true,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }));
 
     const rows = [];
-    data.map((v) => {
+    data.map((v, i) => {
       rows.push({
         id: v.id,
         title: v.title,
@@ -87,8 +92,8 @@ router.get('/:tag/:page', async (req, res, next) => {
         user: {
           id: v.userId,
         },
-        tag: tag.filter((x) => v.id === x.noteID).map((z) => {
-          return { id: z.hashtagID, name: z.hashtagName, count: z.count };
+        tag: tag[i].map((x) => {
+          return { id: x.hashtagID, name: x.hashtagName, count: x.count };
         }),
       });
     });

@@ -7,13 +7,15 @@ import { Form, Input, Checkbox, Button, Select } from 'antd';
 import { backUrl } from '../../../../config/config';
 import { NOTE_EDIT_REQUEST } from '../../../../reducers/note';
 
+import '../style/adminNoteEdit.css';
+
 const ToastEditor = dynamic(() => import('../../../common/component/ToastEditor'), { ssr: false });
 
 axios.defaults.baseURL = `${backUrl}/api`;
 
-const NoteEditFormLayout = {
+const FormLayout = {
   labelCol: {
-    xs: { span: 12 },
+    xs: { span: 7 },
     sm: { span: 7 },
     md: { span: 5 },
     lg: { span: 5 }, 
@@ -21,7 +23,7 @@ const NoteEditFormLayout = {
     xxl: { span: 5 },
   },
   wrapperCol: {
-    xs: { span: 24 },
+    xs: { span: 14 },
     sm: { span: 14 },
     md: { span: 16 },
     lg: { span: 16 },
@@ -30,14 +32,14 @@ const NoteEditFormLayout = {
   },
 };
 
-const TailNoteEditFormLayout = {
+const TailFormLayout = {
   wrapperCol: {
-    xs: { span: 5, offset: 12 },
-    sm: { span: 5, offset: 7 },
-    md: { span: 5, offset: 5 },
-    lg: { span: 5, offset: 5 },
-    xl: { span: 5, offset: 5 },
-    xxl: { span: 5, offset: 5 },
+    xs: { span: 14 },
+    sm: { span: 14, offset: 7 },
+    md: { span: 14, offset: 5 },
+    lg: { span: 16 },
+    xl: { span: 16 },
+    xxl: { span: 16 },
   },
 };
 
@@ -104,28 +106,30 @@ const NoteEdit = ({ pCategory, pData }) => {
   ));
 
   return (
-    <Form encType="multipart/form-data" {...NoteEditFormLayout}>
-      <Form.Item label="category">
-      <Select defaultValue={pData.Category.id} style={{ width: 120 }} onChange={onChangeCategory}>
-        {options}
-      </Select>
-      </Form.Item>
-      <Form.Item label="title">
-        <Input value={title} ref={titleRef} onChange={onChangeTitle} />
-      </Form.Item>
-      <Form.Item label="content">
-        <ToastEditor onChangeContent={onChangeContent} content={content} />
-      </Form.Item>
-      <Form.Item label="tag">
-        <Input value={tag} ref={tagRef} onChange={onChangeTag} />
-      </Form.Item>
-      <Form.Item label="visible">
-        <Checkbox checked={visible} onChange={onChangeVisible} />
-      </Form.Item>
-      <Form.Item {...TailNoteEditFormLayout}>
-        <Button type="primary" onClick={handleSubmit}>submit</Button>
-      </Form.Item>
-    </Form>
+    <div className="admin-note-edit">
+      <Form encType="multipart/form-data" {...FormLayout}>
+        <Form.Item label="category">
+        <Select defaultValue={pData.Category.id} style={{ width: 120 }} onChange={onChangeCategory}>
+          {options}
+        </Select>
+        </Form.Item>
+        <Form.Item label="title">
+          <Input value={title} ref={titleRef} onChange={onChangeTitle} />
+        </Form.Item>
+        <Form.Item label="content">
+          <ToastEditor onChangeContent={onChangeContent} content={content} />
+        </Form.Item>
+        <Form.Item label="tag">
+          <Input value={tag} ref={tagRef} onChange={onChangeTag} />
+        </Form.Item>
+        <Form.Item label="visible">
+          <Checkbox checked={visible} onChange={onChangeVisible} />
+        </Form.Item>
+        <Form.Item {...TailFormLayout}>
+          <Button type="primary" onClick={handleSubmit}>edit</Button>
+        </Form.Item>
+      </Form>
+    </div>
   );
 };
 
@@ -137,4 +141,4 @@ NoteEdit.propTypes = {
   pData: PropTypes.object.isRequired,
 };
 
-export default memo(NoteEdit);
+export default NoteEdit;

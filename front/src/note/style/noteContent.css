@@ -1,0 +1,16 @@
+.content .view {
+    position: relative;
+    left: 50%;
+    width: 90%;
+    max-width: 1024px;
+    transform: translateX(-50%);
+    background-color: #eeeeee;
+}
+
+.content .view .tui-chart-series-custom-event-area {
+    display: none;
+}
+
+.content .view .tui-editor-contents pre {
+    overflow: hidden;
+}

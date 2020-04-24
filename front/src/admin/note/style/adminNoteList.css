@@ -1,0 +1,43 @@
+.content .admin-note {
+    position: relative;
+    left: 50%;
+    width: 90%;
+    max-width: 1024px;
+    padding-bottom: 150px;
+    transform: translateX(-50%);
+}
+
+.content .admin-note .ant-table-wrapper {
+    background-color: #202020;
+}
+
+.content .admin-note .ant-table-thead tr th {
+    font-size: 1rem;
+    border: none;
+    background-color: #eeeeee;
+}
+
+.content .admin-note .ant-table-thead .ant-table-column-title a {
+    color: #181818;
+}
+
+.content .admin-note .ant-table-content .ant-table-tbody {
+    font-size: .8rem;
+    color: #aaaaaa;
+}
+
+.ant-table-tbody > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected) > td {
+    background: unset !important;
+}
+
+.content .admin-note .ant-table-tbody .ant-table-row {
+    cursor: pointer;
+}
+
+.content .admin-note .ant-table-tbody .ant-table-row-cell-ellipsis:hover {
+    background: unset !important;
+}
+
+.content .admin-note .ant-table-tbody .ant-table-row-cell-ellipsis a {
+    color: #aaaaaa;
+}

@@ -7,8 +7,6 @@ import NoteContent from '../../src/note/component/NoteContent';
 
 import { NOTE_VIEW_REQUEST } from '../../reducers/note';
 
-import '../../css/note/noteContent.css';
-
 const NoteView = () => {
   const { data } = useSelector((state) => state.note);
   const { title = '' } = data;

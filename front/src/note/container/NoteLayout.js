@@ -2,13 +2,14 @@ import React, { useState, useEffect, memo } from 'react';
 import { useSelector } from 'react-redux';
 import Router from 'next/router';
 import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
 
 import NoteLogo from '../component/NoteLogo';
 import NoteMenu from '../component/NoteMenu';
 
 import { useWindowWidth, uesWindowScroll } from '../../common/hooks';
 
-import '../../../css/note/noteLayout.css';
+import '../style/noteLayout.css';
 
 const NoteLayout = ({ title, children }) => {
   console.log('title: ', title);
@@ -70,7 +71,11 @@ const NoteLayout = ({ title, children }) => {
   }, [windowScroll]);
 
   return (
-    <div className="wrap">
+    <div className="layout">
+      <Helmet>
+        <title>THMSY - {title}</title>
+        <meta name="description" content={title} />
+      </Helmet>
       <input type="checkbox" id="bars" />
       <div className="sticky">
         <NoteLogo />

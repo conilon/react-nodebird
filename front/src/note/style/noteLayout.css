@@ -1,4 +1,4 @@
-.wrap {
+.layout {
     position: relative;
     width: 100%;
     min-width: 300px;
@@ -6,11 +6,11 @@
     background-color: #181818;
 }
 
-#bars {
+.layout #bars {
     display: none;
 }
 
-#bars + .sticky {
+.layout #bars + .sticky {
     position: fixed;
     top: 0;
     width: 100%;
@@ -20,20 +20,20 @@
     z-index: 2;
 }
 
-#bars + .sticky .logo {
+.layout #bars + .sticky .logo {
     position: absolute;
     top: 50%;
     left: 25px;
     transform: translateY(-50%);
 }
 
-#bars + .sticky .logo .logo-title a {
+.layout #bars + .sticky .logo .logo-title a {
     font-size: 2.4rem;
     font-weight: bold;
     color: #aaaaaa;
 }
 
-#bars + .sticky .bars-button {
+.layout #bars + .sticky .bars-button {
     position: absolute;
     top: 26px;
     right: 25px;
@@ -43,41 +43,41 @@
     cursor: pointer;
 }
 
-#bars + .sticky .bars-button span {
+.layout #bars + .sticky .bars-button span {
     position: absolute;
     width: 100%;
     height: 4px;
     background: #ffffff;
     transition: all .35s;
 }
-#bars + .sticky .bars-button span:nth-of-type(1) {
+.layout #bars + .sticky .bars-button span:nth-of-type(1) {
     top: 0;
 }
-#bars + .sticky .bars-button span:nth-of-type(2) {
+.layout #bars + .sticky .bars-button span:nth-of-type(2) {
     top: 50%;
     transform: translateY(-50%);
 }
-#bars + .sticky .bars-button span:nth-of-type(3) {
+.layout #bars + .sticky .bars-button span:nth-of-type(3) {
     bottom: 0;
 }
-#bars:checked + .sticky .bars-button {
+.layout #bars:checked + .sticky .bars-button {
     z-index: 2;
     display: none;
 }
-#bars:checked + .sticky .bars-button span:nth-of-type(1) {
+.layout #bars:checked + .sticky .bars-button span:nth-of-type(1) {
     top: 50%;
     transform: translateY(-50%) rotate(225deg);
 }
-#bars:checked + .sticky .bars-button span:nth-of-type(2) {
+.layout #bars:checked + .sticky .bars-button span:nth-of-type(2) {
     opacity: 0;
     transition: all .35s;
 }
-#bars:checked + .sticky .bars-button span:nth-of-type(3) {
+.layout #bars:checked + .sticky .bars-button span:nth-of-type(3) {
     bottom: 50%;
     transform: translateY(50%) rotate(-225deg);
 }
 
-#bars + .sticky .bars-blackout {
+.layout #bars + .sticky .bars-blackout {
     position: absolute;
     top: 0;
     left: 0;
@@ -90,11 +90,11 @@
     z-index: 1;
 }
 
-#bars:checked + .sticky .bars-blackout {
+.layout #bars:checked + .sticky .bars-blackout {
     visibility: visible;
 }
 
-#bars ~ .menu {
+.layout #bars ~ .menu {
     position: fixed;
     top: 0;
     right: -280px;
@@ -104,15 +104,15 @@
     transition: all .35s;
     z-index: 2;
 }
-#bars:checked ~ .menu {
+.layout #bars:checked ~ .menu {
     right: 0;
 }
 
-#bars ~ .menu .menu-header {
+.layout #bars ~ .menu .menu-header {
     height: 80px;
 }
 
-#bars ~ .menu .menu-header .bars-button {
+.layout #bars ~ .menu .menu-header .bars-button {
     position: absolute;
     top: 26px;
     right: 25px;
@@ -122,52 +122,52 @@
     cursor: pointer;
 }
 
-#bars ~ .menu .menu-header .bars-button span {
+.layout #bars ~ .menu .menu-header .bars-button span {
     position: absolute;
     width: 100%;
     height: 4px;
     background: #ffffff;
     transition: all .35s;
 }
-#bars ~ .menu .menu-header .bars-button span:nth-of-type(1) {
+.layout #bars ~ .menu .menu-header .bars-button span:nth-of-type(1) {
     top: 0;
 }
-#bars ~ .menu .menu-header .bars-button span:nth-of-type(2) {
+.layout #bars ~ .menu .menu-header .bars-button span:nth-of-type(2) {
     top: 50%;
     transform: translateY(-50%);
 }
-#bars ~ .menu .menu-header .bars-button span:nth-of-type(3) {
+.layout #bars ~ .menu .menu-header .bars-button span:nth-of-type(3) {
     bottom: 0;
 }
-#bars:checked ~ .menu .menu-header .bars-button {
+.layout #bars:checked ~ .menu .menu-header .bars-button {
     z-index: 2;
 }
-#bars:checked ~ .menu .menu-header .bars-button span:nth-of-type(1) {
+.layout #bars:checked ~ .menu .menu-header .bars-button span:nth-of-type(1) {
     top: 50%;
     transform: translateY(-50%) rotate(225deg);
 }
-#bars:checked ~ .menu .menu-header .bars-button span:nth-of-type(2) {
+.layout #bars:checked ~ .menu .menu-header .bars-button span:nth-of-type(2) {
     opacity: 0;
     transition: all .35s;
 }
-#bars:checked ~ .menu .menu-header .bars-button span:nth-of-type(3) {
+.layout #bars:checked ~ .menu .menu-header .bars-button span:nth-of-type(3) {
     bottom: 50%;
     transform: translateY(50%) rotate(-225deg);
 }
 
-#bars ~ .menu .category {
+.layout #bars ~ .menu .category {
     padding: .2rem;
     transition: all .35s;
 }
 
-#bars ~ .menu .category .title {
+.layout #bars ~ .menu .category .title {
     padding: 5px;
     font-size: 1.3rem;
     font-weight: bold;
     color: #e1e1e1;
 }
 
-#bars ~ .menu .category .content > a {
+.layout #bars ~ .menu .category .content > a {
     display: inline-block;
     font-size: .95rem;
     font-weight: bold;
@@ -176,19 +176,19 @@
     margin: .2rem;
 }
 
-#bars ~ .menu .tag {
+.layout #bars ~ .menu .tag {
     padding: .2rem;
     transition: all .35s;
 }
 
-#bars ~ .menu .tag .title {
+.layout #bars ~ .menu .tag .title {
     padding: 5px;
     font-size: 1.3rem;
     font-weight: bold;
     color: #e1e1e1;
 }
 
-#bars ~ .menu .tag .content > a {
+.layout #bars ~ .menu .tag .content > a {
     display: inline-block;
     font-size: .95rem;
     font-weight: bold;
@@ -197,7 +197,7 @@
     margin: .2rem;
 }
 
-#bars ~ .blackout {
+.layout #bars ~ .blackout {
     position: absolute;
     top: 0;
     left: 0;
@@ -210,24 +210,23 @@
     z-index: 1;
 }
 
-#bars:checked ~ .blackout {
+.layout #bars:checked ~ .blackout {
     visibility: visible;
 }
 
-.wrap > .header {
+.layout > .header {
     position: relative;
     width: 100%;
     height: 400px;
 }
 
-.wrap > .header .header-title {
+.layout > .header .header-title {
     display: -webkit-box;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    min-width: 320px;
     max-width: 460px;
     height: calc(2.5rem * 3);
     line-height: 4rem;
@@ -245,16 +244,19 @@
     -webkit-box-orient: vertical;
 }
 
-.wrap > .content {
+.layout > .content .note {
+    padding-bottom: 150px;
+}
+
+.layout > .content .note .list {
     position: relative;
     left: 50%;
     width: 90%;
     max-width: 1024px;
-    padding-bottom: 150px;
     transform: translateX(-50%);
 }
 
-.wrap > .footer {
+.layout > .footer {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -262,7 +264,7 @@
     background-color: #202020;
 }
 
-.wrap > .footer .footer-title {
+.layout > .footer .footer-title {
     position: absolute;
     top: 50%;
     left: 50%;

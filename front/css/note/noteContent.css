@@ -1,9 +1,0 @@
-.content .view {
-    visibility: hidden;
-    padding: 0 1rem;
-    background-color: #eeeeee;
-}
-
-.content .view .tui-chart-series-custom-event-area {
-    display: none;
-}

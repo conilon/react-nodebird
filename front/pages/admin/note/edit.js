@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import { NOTE_ADMIN_VIEW_REQUEST } from '../../../reducers/note';
+import NoteLayout from '../../../src/note/container/NoteLayout';
+import AdminNoteEdit from '../../../src/admin/note/component/AdminNoteEdit';
 
-import NoteEdit from '../../../src/admin/note/component/NoteEdit';
+import { NOTE_ADMIN_VIEW_REQUEST } from '../../../reducers/note';
 
 const Edit = () => {
   const { data: pData } = useSelector((state) => state.note);
   const { data: pCategory } = useSelector((state) => state.category);
   
   return (
-    <div>
-      {pData && pCategory && <NoteEdit pCategory={pCategory} pData={pData} />}
-    </div>
+    <NoteLayout title={`관리자 노트 에디트 ${pData.id}`}>
+      {pData.id && pCategory && <AdminNoteEdit pCategory={pCategory} pData={pData} />}
+    </NoteLayout>
   );
 };
 
